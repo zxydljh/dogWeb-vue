@@ -1,26 +1,32 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <ShortcutNavigation></ShortcutNavigation>
+  <DogWebHeader></DogWebHeader>
+  <GeneralNavigation></GeneralNavigation>
+  <IndexProprietaryPage></IndexProprietaryPage>
+  <SidebarModule/>
+  <DogWebFooter></DogWebFooter>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import DogWebHeader from './components/DogWebHeader.vue'
+import DogWebFooter from './components/DogWebFooter.vue'
+import ShortcutNavigation from './components/ShortcutNavigation.vue'
+import SidebarModule from './components/SidebarModule.vue'
+import GeneralNavigation from './components/GeneralNavigation.vue'
+import IndexProprietaryPage from './components/IndexProprietaryPage'
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    DogWebHeader,
+    DogWebFooter,
+    ShortcutNavigation,
+    SidebarModule,
+    GeneralNavigation,
+    IndexProprietaryPage
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
