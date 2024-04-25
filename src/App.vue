@@ -5,8 +5,10 @@
   <DogWebHeader></DogWebHeader>
   <!-- 常规导航栏 -->
   <GeneralNavigation></GeneralNavigation>
-  <!-- 页面主要内容区域 -->
-  <IndexProprietaryPage></IndexProprietaryPage>
+
+  <!-- 页面专有模块 -->
+  <router-view></router-view>
+
   <!-- 侧边栏功能模块 -->
   <SidebarModule/>
   <!-- 底部模块 -->
@@ -14,12 +16,14 @@
 </template>
 
 <script>
-import DogWebHeader from './components/DogWebHeader.vue'
-import DogWebFooter from './components/DogWebFooter.vue'
-import ShortcutNavigation from './components/ShortcutNavigation.vue'
-import SidebarModule from './components/SidebarModule.vue'
-import GeneralNavigation from './components/GeneralNavigation.vue'
-import IndexProprietaryPage from './components/IndexProprietaryPage'
+import '../public/Font/font/iconfont.css'
+
+import DogWebHeader from '@/components/common/DogWebHeader.vue'
+import DogWebFooter from '@/components/common/DogWebFooter.vue'
+import ShortcutNavigation from '@/components/common/ShortcutNavigation.vue'
+import SidebarModule from '@/components/common/SidebarModule.vue'
+import GeneralNavigation from '@/components/common/GeneralNavigation.vue'
+
 export default {
   name: 'App',
   components: {
@@ -27,8 +31,7 @@ export default {
     DogWebFooter,
     ShortcutNavigation,
     SidebarModule,
-    GeneralNavigation,
-    IndexProprietaryPage
+    GeneralNavigation
   }
 }
 </script>
