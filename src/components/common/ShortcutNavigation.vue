@@ -4,28 +4,40 @@
             <div class="fl">
                 <ul>
                     <li>狗狗网欢迎您！&nbsp;</li>
-                    <li>请&nbsp;&nbsp;<a href="login.html" class="style_black"><strong>登录</strong></a> &nbsp;
-                        <a href="register.html" class="style_red">免费注册</a>
+                    <li>请&nbsp;&nbsp;<router-link to="/login" class="style_black"><strong>登录</strong></router-link> &nbsp;
+                        <router-link to="/register" class="style_red">免费注册</router-link>
                     </li>
                 </ul>
             </div>
             <div class="fr">
                 <ul>
                     <li>
-                        <a href="ser_online.html" class="service">客户服务</a>
+                        <a href="javascript:;" class="service">客户服务</a>
                         <div class="small_list">
-                            <div><a href="ser_online.html">在线客服</a></div>
-                            <div><a href="ser_phone.html">电话客服</a></div>
+                            <div>
+                              <router-link to="/onlineServer">在线客服</router-link>
+                            </div>
+                            <div>
+                              <router-link to="/phoneServer">电话客服</router-link>
+                            </div>
                         </div>
                     </li>
                     <li></li>
-                    <li><a href="member.html">狗狗网会员</a></li>
+                    <li>
+                      <router-link to="/member">狗狗网会员</router-link>
+                    </li>
                     <li></li>
-                    <li><a href="shoppingcar.html">心动萌宠</a></li>
+                    <li>
+                      <router-link to="/shoppingCar">心动萌宠</router-link>
+                    </li>
                     <li></li>
-                    <li><a href="attention.html">关注我们</a></li>
+                    <li>
+                      <router-link to="/attention">关注我们</router-link>
+                    </li>
                     <li></li>
-                    <li><a href="suggest.html">留言/建议</a></li>
+                    <li>
+                      <router-link to="/suggest">留言/建议</router-link>
+                    </li>
                 </ul>
             </div>
         </div>

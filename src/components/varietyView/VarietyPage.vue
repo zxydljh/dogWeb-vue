@@ -1,6 +1,6 @@
 <script>
 export default {
-  name:'VarietyPage'
+  name: 'VarietyPage'
 }
 </script>
 
@@ -178,6 +178,9 @@ export default {
 
 <style scoped>
 /* 狗狗种类专有模块 */
+.w{
+  width: 1200px
+}
 .variety {
   margin-top: 30px;
 }
@@ -288,10 +291,5 @@ export default {
 
 .variety li img:hover {
   transform: scale(1.3);
-}
-
-/* footer模块 */
-.care_box {
-  margin-top: 20px;
 }
 </style>

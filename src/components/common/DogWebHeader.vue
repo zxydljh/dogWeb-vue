@@ -38,7 +38,7 @@ export default {
     display: block;
     width: 190px;
     height: 114px;
-    background: url(https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/assets/commonImages/logo_03.png) no-repeat;
+    background: url(https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/assets/commonImages/logo.png) no-repeat;
     /* 让文字隐藏 */
     font-size: 0;
 }
