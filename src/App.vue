@@ -1,6 +1,6 @@
 <template>
   <!-- 快捷导航栏 -->
-  <ShortcutNavigation/>
+  <ShortcutNavigation @show-popup="showPopup"/>
   <!-- 头部搜索模块 -->
   <DogWebHeader/>
   <!-- 常规导航栏 -->
@@ -19,7 +19,8 @@
       <div id="mark">
         <!-- 点击 关闭弹出层 -->
         <button id="close" @click="closeWindowContent">关闭</button>
-        <router-view :key="$route.fullPath" name="windowContent"/> <!-- 使用key确保视图更新 -->
+        <!-- 弹出层内容根据 currentPopupRoute 动态渲染 -->
+        <component :is="currentPopupComponent"/>
       </div>
     </transition>
   </div>
@@ -39,6 +40,13 @@ import ShortcutNavigation from '@/components/common/ShortcutNavigation.vue'
 import SidebarModule from '@/components/common/SidebarModule.vue'
 import GeneralNavigation from '@/components/common/GeneralNavigation.vue'
 
+// 服务组件
+import OnlineServer from "@/components/server/OnlineServer.vue";
+import PhoneServer from "@/components/server/PhoneServer.vue";
+import SuggestServer from "@/components/server/SuggestServer.vue";
+import AttentionServer from "@/components/server/AttentionServer.vue";
+import MemberServer from "@/components/server/MemberServer.vue";
+
 export default {
   name: 'App',
   components: {
@@ -51,36 +59,26 @@ export default {
   data() {
     return {
       showWindowContent: false, // 初始状态为隐藏
-      originalRoute: null, // 保存原始路由信息
+      currentPopupComponent: null,
+      popupComponents: { // 弹出层组件映射
+        'onlineServer': OnlineServer,
+        'phoneServer': PhoneServer,
+        'suggest': SuggestServer,
+        'attention': AttentionServer,
+        'member': MemberServer
+      },
     };
   },
-  watch: {
-    // 监听$route的变化，以更新弹出层的显示状态
-    '$route.name'(newVal) {
-      const shouldShowPopup = ['suggest', 'phoneServer','member','attention','onlineServer'].includes(newVal);
-      if (shouldShowPopup) {
-        this.showWindowContent = true;
-        this.originalRoute = this.$route
-      } else {
-        this.showWindowContent = false;
-        this.originalRoute = null;
-      }
-    }
-  },
+
   methods: {
+    showPopup(componentKey) {
+      this.showWindowContent = true;
+      this.currentPopupComponent = this.popupComponents[componentKey];
+    },
     closeWindowContent() {
       this.showWindowContent = false;
-      if (this.originalRoute) {
-        // 导航回原始路由
-        this.$router.push(this.originalRoute.path).catch(err => {
-          // 处理导航失败的情况
-          console.error('导航回原始路由失败', err);
-          this.$router.push('/'); // 备用方案，导航到首页
-        });
-      } else {
-        this.$router.push('/index'); // 如果没有原始路由，导航到首页
-      }
-    }
+      this.currentPopupComponent = null;
+    },
   }
 }
 </script>

@@ -15,16 +15,16 @@
                         <a href="javascript:;" class="service">客户服务</a>
                         <div class="small_list">
                             <div>
-                              <router-link to="/onlineServer">在线客服</router-link>
+                              <a href="#" @click.prevent="showPopup('onlineServer')"> 在线客服</a>
                             </div>
                             <div>
-                              <router-link to="/phoneServer">电话客服</router-link>
+                              <a href="#" @click.prevent="showPopup('phoneServer')">电话客服</a>
                             </div>
                         </div>
                     </li>
                     <li></li>
                     <li>
-                      <router-link to="/member">狗狗网会员</router-link>
+                      <a href="#" @click.prevent="showPopup('member')">狗狗网会员</a>
                     </li>
                     <li></li>
                     <li>
@@ -32,11 +32,11 @@
                     </li>
                     <li></li>
                     <li>
-                      <router-link to="/attention">关注我们</router-link>
+                      <a href="#" @click.prevent="showPopup('attention')">关注我们</a>
                     </li>
                     <li></li>
                     <li>
-                      <router-link to="/suggest">留言/建议</router-link>
+                      <a href="#" @click.prevent="showPopup('suggest')">留言/建议</a>
                     </li>
                 </ul>
             </div>
@@ -46,7 +46,12 @@
 
 <script>
 export default {
-  name:'ShortcutNavigation'
+  name:'ShortcutNavigation',
+  methods: {
+    showPopup(componentKey) {
+      this.$emit('show-popup', componentKey);
+    },
+  },
 }
 </script>
 
