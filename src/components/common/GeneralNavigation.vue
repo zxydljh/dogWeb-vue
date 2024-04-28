@@ -27,6 +27,9 @@
             <div>
               <router-link to="/toy" :class="{'active':$route.meta.active === 'toy'}">狗狗玩具</router-link>
             </div>
+            <div>
+              <router-link to="/shoppingCar" :class="{'active':$route.meta.active === 'shoppingCar'}">购物车</router-link>
+            </div>
           </div>
         </li>
       </ul>

@@ -28,7 +28,7 @@
                     </li>
                     <li></li>
                     <li>
-                      <a href="#" @click.prevent="showPopup('shoppingCar')">心动萌宠</a>
+                      <router-link to="shoppingCar">购物车</router-link>
                     </li>
                     <li></li>
                     <li>

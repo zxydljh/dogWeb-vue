@@ -236,6 +236,7 @@ export default {
         </div>
       </div>
     </div>
+    <router-view name="shoppingCar"></router-view>
   </div>
   <!-- buy_dog页面专有模块 end -->
 </template>

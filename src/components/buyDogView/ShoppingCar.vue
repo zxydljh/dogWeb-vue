@@ -1,16 +1,13 @@
 <script>
 export default {
-  name:'ShoppingCar'
+  name:'ShoppingCar',
+
 }
 </script>
 
 <template>
   <!-- shoppingcar页面专有模块 -->
-  <div class="c-container">
     <div class="w">
-      <div class="cart-filter-bar">
-        <em>我的订单</em>
-      </div>
       <!-- 购物车主要核心区域 -->
       <div class="cart-warp">
         <!-- 头部全选模块 -->
@@ -108,24 +105,9 @@ export default {
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <style scoped>
-.cart-filter-bar {
-  position: relative;
-  text-align: center;
-  font-size: 36px;
-  color: #E2231A;
-  font-weight: 700;
-}
-
-.cart-filter-bar em {
-  position: absolute;
-  top: -90px;
-  padding: 5px;
-}
-
 .cart-thead {
   font-size: 16px;
   height: 32px;

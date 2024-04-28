@@ -5,7 +5,7 @@
         <a href="#top" title="回到顶部">返回顶部</a>
       </div>
       <div class="car">
-        <a href="../html/shoppingcar.html" class="iconfont icon-icon-test5" title="购物车">购物车</a>
+        <router-link to="/shoppingCar" class="iconfont icon-icon-test5" title="购物车">购物车</router-link>
       </div>
     </div>
   </div>

@@ -39,6 +39,7 @@ import DogWebFooter from '@/components/common/DogWebFooter.vue'
 import ShortcutNavigation from '@/components/common/ShortcutNavigation.vue'
 import SidebarModule from '@/components/common/SidebarModule.vue'
 import GeneralNavigation from '@/components/common/GeneralNavigation.vue'
+import ShoppingCar from "@/components/buyDogView/ShoppingCar.vue";
 
 // 服务组件
 import OnlineServer from "@/components/server/OnlineServer.vue";
@@ -46,7 +47,6 @@ import PhoneServer from "@/components/server/PhoneServer.vue";
 import SuggestServer from "@/components/server/SuggestServer.vue";
 import AttentionServer from "@/components/server/AttentionServer.vue";
 import MemberServer from "@/components/server/MemberServer.vue";
-import ShoppingCar from "@/components/buyDogView/ShoppingCar.vue";
 import LoginServer from "@/components/server/LoginServer.vue";
 import RegisterServer from "@/components/server/RegisterServer.vue";
 
@@ -58,6 +58,7 @@ export default {
     ShortcutNavigation,
     SidebarModule,
     GeneralNavigation,
+    ShoppingCar
   },
   data() {
     return {
@@ -69,7 +70,6 @@ export default {
         'suggest': SuggestServer,
         'attention': AttentionServer,
         'member': MemberServer,
-        'shoppingCar': ShoppingCar,
         'login': LoginServer,
         'register': RegisterServer
       },

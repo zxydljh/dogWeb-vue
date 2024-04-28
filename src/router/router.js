@@ -87,26 +87,16 @@ const routes = [
             active: 'toy'
         }
     },
-    // 快捷导航栏路由
     {
         path: '/shoppingCar',
         name: 'shoppingCar',
-        component: ShoppingCar
-    },
-    {
-        path: '/login',
-        name: 'login',
         components: {
-            windowContent: LoginServer
+            mainContent: ShoppingCar,
+        },
+        meta: {
+            active: 'shoppingCar'
         }
     },
-    {
-        path: '/register',
-        name: 'register',
-        components: {
-            windowContent: RegisterServer
-        }
-    }
 ];
 
 var router = createRouter({
