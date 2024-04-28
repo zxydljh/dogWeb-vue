@@ -36,8 +36,9 @@ export default {
 /* 头部标题 */
 .ser_online_box {
   width: 100%;
-  height: 100%;
+  height: 90%;
   border: 1px solid rgb(241, 168, 11);
+  border-radius: 10px;
   background-color: #f1f1f1;
   display: flex;
   flex-direction: column;
@@ -50,14 +51,14 @@ export default {
   line-height: 60px;
   height: 57px;
   color: orange;
-  bottom: 0;
+  margin-top: 20px;
 }
 
 /* 电话盒子 */
 .phone {
   margin: auto;
   width: 100%;
-  height: 400px;
+  height: 350px;
   display: flex;
   justify-content: space-around;
 }

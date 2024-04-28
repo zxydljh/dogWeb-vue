@@ -24,8 +24,8 @@ export default {
 .attention {
   width: 600px;
   height: 400px;
-  margin: 50px auto;
-  background-color: #00000078;
+  margin: 0 auto;
+  background-color: #00000088;
 }
 
 .content {

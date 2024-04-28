@@ -49,10 +49,15 @@ export default {
 <style scoped>
 /* 注册页专有模块 */
 .log_in_page {
-  margin: 20px auto 0;
+  position: absolute;
+  right: 0;
+  margin: 0 auto;
   width: 450px;
-  height: 580px;
+  height: 600px;
   padding: 20px 25px;
+  background-color: #f1f1f1;
+  background-image: url("../../assets/registerBgc.jpg");
+  border-radius: 10px;
 }
 
 .log_in_box {
@@ -104,7 +109,7 @@ input {
   font-size: 14px;
   margin-top: 20px;
   height: 24px;
-  color: #fff;
+  color: black;
 }
 
 .input_box_am input {

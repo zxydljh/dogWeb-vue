@@ -7,7 +7,7 @@ export default {
 <template>
   <div class="chatContainer">
     <div class="title">
-      <h1>客服热线</h1>
+      <h1>在线客服</h1>
     </div>
     <div class="chatBox-info">
       <!--   商家消息   -->
@@ -16,14 +16,14 @@ export default {
         <div class="messageBox merchant">
           <img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/assets/uploadImages/bianjingmuyangquan_1.png"
                alt="" id="headPortrait">
-          <span>您好，有什么可以为您服务吗？</span>
+          <span class="messages">您好，有什么可以为您服务吗？</span>
         </div>
       </div>
       <!--   用户消息   -->
       <div class="infoBox">
         <div class="localTime">2002.12.20 12:32:52</div>
         <div class="messageBox user">
-          <span>请问这里有关于猫咪的页面或者图片吗？</span>
+          <span class="messages">请问这里有关于猫咪的页面或者图片吗？</span>
           <img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/assets/uploadImages/yingguodouniuquan_1.png"
                alt="" id="headPortrait">
         </div>
@@ -41,6 +41,7 @@ export default {
   width: 100%;
   height: 100%;
   border: 1px solid rgb(241, 168, 11);
+  border-radius: 10px;
   background-color: #f1f1f1;
 }
 
@@ -68,30 +69,37 @@ export default {
 }
 
 .infoBox {
-  margin-top: 20px;
+  margin-top: 10px;
   color: black;
   height: 70px;
 }
 
 .localTime {
   text-align: center;
+  margin-bottom: 5px;
 }
 
 .messageBox {
-  height: 50px;
+  height: 42px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 
 .user {
   float: right;
 }
 
-.user span {
-  margin-right: 10px;
-}
-
-/*商家和用户消息框专有样式*/
-.merchant span {
-  margin-left: 10px;
+.messages {
+  padding: 0 12px;
+  margin: 0 10px;
+  display: inline-block;
+  height: 100%;
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 42px;
+  border: 1px solid rgb(241, 168, 11);
+  border-radius: 20px;
 }
 
 .messageBox img {
@@ -100,19 +108,9 @@ export default {
   border-radius: 25px;
 }
 
-.messageBox span {
-  display: inline-block;
-  height: 100%;
-  font-size: 18px;
-  font-weight: bold;
-  line-height: 50px;
-  border: 1px solid rgb(241, 168, 11);
-  border-radius: 20px;
-}
-
 .send {
   position: absolute;
-  border-top: #a47a0c 1px solid;
+  border-top: #c2c1bb 1px solid;
   bottom: 0;
   font-size: 18px;
   width: 100%;

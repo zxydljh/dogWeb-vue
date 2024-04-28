@@ -1,33 +1,31 @@
 <script>
 export default {
-  name:'LoginServer'
+  name: 'LoginServer'
 }
 </script>
 
 <template>
   <!-- 登录页面专有模块 start -->
-  <div class="w">
-    <div class="log_in_page">
-      <form class="log_in_box" action="http://localhost:3000/html/login.html" method="post">
-        <div class="input_box_input">
-          <input type="tel" placeholder="手机号" required name="tel">
-        </div>
-        <div class="input_box_input">
-          <input type="password" placeholder="密码" required name="password">
-        </div>
-        <div class="input_box">
-          <button name="submit">登录</button>
-        </div>
-        <div class="input_box_am">
-          <input type="checkbox">我同意狗狗网<a href="#">用户协议</a>和<a href="#">隐私政策</a>
-        </div>
-        <div class="input_box_else">
-          <h3>其他方式登录</h3>
-          <span class="qq"><a href="#"></a></span>
-          <span class="vx"><a href="#"></a></span>
-        </div>
-      </form>
-    </div>
+  <div class="log_in_page">
+    <form class="log_in_box" action="http://localhost:3000/html/login.html" method="post">
+      <div class="input_box_input">
+        <input type="tel" placeholder="手机号" required name="tel">
+      </div>
+      <div class="input_box_input">
+        <input type="password" placeholder="密码" required name="password">
+      </div>
+      <div class="input_box">
+        <button name="submit">登录</button>
+      </div>
+      <div class="input_box_am">
+        <input type="checkbox">我同意狗狗网<a href="#">用户协议</a>和<a href="javascript:;">隐私政策</a>
+      </div>
+      <div class="input_box_else">
+        <h3>其他方式登录</h3>
+        <span class="qq"><a href="javascript:;"></a></span>
+        <span class="vx"><a href="javascript:;"></a></span>
+      </div>
+    </form>
   </div>
   <!-- 登录页面专有模块 end -->
 </template>
@@ -35,10 +33,15 @@ export default {
 <style scoped>
 /* 登录页专有模块 */
 .log_in_page {
-  margin: 50px auto 0;
+  position: absolute;
+  right: 0;
+  margin: 0 auto;
   width: 450px;
   height: 480px;
   padding: 20px 25px;
+  background-color: #f1f1f1;
+  background-image: url("../../assets/loginBgc.jpg");
+  border-radius: 10px;
 }
 
 .log_in_box {

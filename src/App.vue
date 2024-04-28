@@ -13,8 +13,8 @@
     </keep-alive>
   </transition>
 
+  <!-- 服务组件窗口 -->
   <div id="shell" v-if="showWindowContent" class="popup">
-    <!-- 服务组件窗口 -->
     <transition name="fade">
       <div id="mark">
         <!-- 点击 关闭弹出层 -->
@@ -46,6 +46,9 @@ import PhoneServer from "@/components/server/PhoneServer.vue";
 import SuggestServer from "@/components/server/SuggestServer.vue";
 import AttentionServer from "@/components/server/AttentionServer.vue";
 import MemberServer from "@/components/server/MemberServer.vue";
+import ShoppingCar from "@/components/buyDogView/ShoppingCar.vue";
+import LoginServer from "@/components/server/LoginServer.vue";
+import RegisterServer from "@/components/server/RegisterServer.vue";
 
 export default {
   name: 'App',
@@ -65,7 +68,10 @@ export default {
         'phoneServer': PhoneServer,
         'suggest': SuggestServer,
         'attention': AttentionServer,
-        'member': MemberServer
+        'member': MemberServer,
+        'shoppingCar': ShoppingCar,
+        'login': LoginServer,
+        'register': RegisterServer
       },
     };
   },
@@ -85,8 +91,8 @@ export default {
 
 <style>
 #shell {
-  width: 700px;
-  height: 600px;
+  width: 600px;
+  height: 550px;
   margin: auto;
   display: flex;
   justify-content: center;
@@ -108,15 +114,17 @@ export default {
 }
 
 #mark #close {
+  z-index: 20;
   position: absolute;
   right: 0;
-  font-size: 20px;
+  font-size: 0;
   color: white;
-  width: 40px;
-  height: 40px;
-  background-color: red;
+  width: 32px;
+  height: 32px;
+  border: orange 1px solid;
   border-radius: 10px;
   text-align: center;
   line-height: 40px;
+  background-image: url("assets/icon/close.svg");
 }
 </style>

@@ -4,8 +4,8 @@
             <div class="fl">
                 <ul>
                     <li>狗狗网欢迎您！&nbsp;</li>
-                    <li>请&nbsp;&nbsp;<router-link to="/login" class="style_black"><strong>登录</strong></router-link> &nbsp;
-                        <router-link to="/register" class="style_red">免费注册</router-link>
+                    <li>请&nbsp;&nbsp;<a href="#" @click.prevent="showPopup('login')" class="style_black"><strong>登录</strong></a> &nbsp;
+                        <a href="#" @click.prevent="showPopup('register')" class="style_red">免费注册</a>
                     </li>
                 </ul>
             </div>
@@ -28,7 +28,7 @@
                     </li>
                     <li></li>
                     <li>
-                      <router-link to="/shoppingCar">心动萌宠</router-link>
+                      <a href="#" @click.prevent="showPopup('shoppingCar')">心动萌宠</a>
                     </li>
                     <li></li>
                     <li>

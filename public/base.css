@@ -45,6 +45,14 @@ input {
     border: 0;
 }
 
+select {
+    /*去除高亮*/
+    -webkit-tap-highlight-color: #fff;
+    /*去除边框样式*/
+    outline: none;
+    border: none;
+}
+
 body {
     -webkit-font-smoothing: antialiased;
     background-color: #fff;

@@ -15,7 +15,7 @@ export default {
         <ul>
           <li>单独的VIP电话客服服务</li>
           <li>凡在本网站购买的狗狗，享受一年的免费资讯狗狗居家生活常识和健康资讯</li>
-          <li>在狗狗网购买狗狗的生活用品一律8折</li>
+          <li>在狗狗网购买狗狗的生活用品一律 <strong class="discount">8</strong> 折</li>
         </ul>
       </div>
       <div class="cost">
@@ -38,7 +38,11 @@ export default {
   background-color: rgb(40, 38, 38);
   color: #fff;
   font-size: 16px;
-  margin: 100px auto 0;
+  margin: 10px auto 0;
+}
+
+.member:hover{
+  cursor: default;
 }
 
 .vip {
@@ -61,6 +65,14 @@ export default {
 
 .cost {
   margin-top: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.discount{
+  font-size: 24px;
+  color: orange;
 }
 
 .cost div {
@@ -75,6 +87,7 @@ export default {
   width: 200px;
   height: 40px;
   font-size: 18px;
+  margin-right: 10px;
 }
 
 .cost .price i {
