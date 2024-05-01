@@ -1,21 +1,52 @@
 <script>
+import axios from "axios";
+
 export default {
-  name: 'LoginServer'
+  name: 'LoginServer',
+  data() {
+    return {
+      loading: false,
+      phone: '13577777777',
+      password: ''
+    };
+  },
+  methods: {
+    login() {
+      axios.post('/api/user/login', {
+        // TODO 待解决动态绑定数据，安全问题导致页面请求失败
+        phone: '13577777777',
+        password: '123456'
+      }).then(res => {
+            // console.log(res.data)
+            if (res.data.code === 1) {
+              this.$store.commit('setLoaded',true)
+              this.$store.commit('setPhoneNumber',this.phone) // 登录成功，保存电话号码到 Vuex
+              // this.$router.push('/index')
+            } else {
+              this.loading = false
+            }
+          }
+      ).catch(error => {
+        console.log(error.response)
+      })
+    }
+  }
 }
 </script>
 
 <template>
   <!-- 登录页面专有模块 start -->
   <div class="log_in_page">
-    <form class="log_in_box" action="http://localhost:3000/html/login.html" method="post">
+    <form class="log_in_box" action="" method="post">
       <div class="input_box_input">
-        <input type="tel" placeholder="手机号" required name="tel">
+        <input type="tel" v-model="phone" placeholder="手机号" required name="tel">
       </div>
       <div class="input_box_input">
-        <input type="password" placeholder="密码" required name="password">
+        <input type="password" v-model="password" placeholder="密码" required name="password">
       </div>
       <div class="input_box">
-        <button name="submit">登录</button>
+        <button v-if="!loading" name="submit" @click="login">登录</button>
+        <button v-else name="submit">登录中...</button>
       </div>
       <div class="input_box_am">
         <input type="checkbox">我同意狗狗网<a href="#">用户协议</a>和<a href="javascript:;">隐私政策</a>

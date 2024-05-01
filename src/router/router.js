@@ -9,8 +9,6 @@ import Food from "@/components/foodView/FoodPage.vue";
 import Information from "@/components/informationView/InformationPage.vue";
 import Drugstore from "@/components/drugstoreView/DrugstorePage.vue";
 import ShoppingCar from "@/components/buyDogView/ShoppingCar.vue";
-import LoginServer from "@/components/server/LoginServer.vue";
-import RegisterServer from "@/components/server/RegisterServer.vue";
 
 // 服务窗口
 
@@ -101,7 +99,19 @@ const routes = [
 
 var router = createRouter({
     history: createWebHistory(),
-    routes
+    routes,
+    scrollBehavior(to, from, savedPosition) {
+        // 如果有保存的位置信息，则滚动到保存的位置
+        if (savedPosition) {
+            return savedPosition;
+        } else {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve({ left: 0, top: 0 });
+                }, 100); // 添加延迟时间，单位为毫秒
+            });
+        }
+    }
 });
 
 export default router;

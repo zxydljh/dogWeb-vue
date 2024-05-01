@@ -62,8 +62,8 @@ export default {
   },
   data() {
     return {
-      showWindowContent: false, // 初始状态为隐藏
-      currentPopupComponent: null,
+      showWindowContent: true, // 初始状态为显示登录窗口
+      currentPopupComponent: LoginServer,
       popupComponents: { // 弹出层组件映射
         'onlineServer': OnlineServer,
         'phoneServer': PhoneServer,
@@ -75,7 +75,6 @@ export default {
       },
     };
   },
-
   methods: {
     showPopup(componentKey) {
       this.showWindowContent = true;
@@ -85,7 +84,11 @@ export default {
       this.showWindowContent = false;
       this.currentPopupComponent = null;
     },
-  }
+  },
+  // 路由守卫
+  // beforeRouteUpdate(to, from, next) {
+  //
+  // },
 }
 </script>
 

@@ -2,7 +2,7 @@
   <div class="right-side">
     <div class="right-box">
       <div class="top_img">
-        <a href="#top" title="回到顶部">返回顶部</a>
+        <a href="#top" @click="pageTop" title="回到顶部">返回顶部</a>
       </div>
       <div class="car">
         <router-link to="/shoppingCar" class="iconfont icon-icon-test5" title="购物车">购物车</router-link>
@@ -12,10 +12,10 @@
 </template>
 
 
-
 <script>
 export default {
-  name: 'SidebarModule'
+  name: 'SidebarModule',
+
 }
 </script>
 
