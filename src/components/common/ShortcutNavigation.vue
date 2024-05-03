@@ -3,12 +3,14 @@
     <div class="w">
       <div class="fl">
         <ul>
-          <li>狗狗网欢迎您！ </li>
+          <li>狗狗网欢迎您！</li>
           <li v-if="!loaded">请&nbsp;&nbsp;<a href="#" @click.prevent="showPopup('login')"
                                               class="style_black"><strong>登录</strong></a> &nbsp;
             <a href="#" @click.prevent="showPopup('register')" class="style_red">免费注册</a>
           </li>
-          <li v-else class="username">{{ phoneNumber }}</li>
+          <!--    渲染电话号或名称      -->
+          <!-- <li v-else class="username">{{ phoneNumber }}</li> -->
+          <li v-else class="username">{{ username }}</li>
         </ul>
       </div>
       <div class="fr">
@@ -51,10 +53,6 @@ import {mapState} from "vuex";
 
 export default {
   name: 'ShortcutNavigation',
-  data() {
-    return {
-    }
-  },
   methods: {
     showPopup(componentKey) {
       this.$emit('show-popup', componentKey);
@@ -65,6 +63,9 @@ export default {
     phoneNumber() {
       return this.$store.state.phoneNumber;  // 从 Vuex 中获取电话号码
     },
+    username() {
+      return this.$store.state.username;
+    }
   }
 }
 </script>

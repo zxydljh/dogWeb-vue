@@ -3,7 +3,9 @@ import {createStore} from "vuex";
 export default createStore({
     state: {
         phoneNumber: '',
-        loaded: false
+        loaded: false,
+        username: '',
+        loggedStatus: false
     },
     mutations: {
         setPhoneNumber(state, phoneNumber) {
@@ -11,7 +13,10 @@ export default createStore({
         },
         setLoaded(state,value){
             state.loaded = value
-        }
+        },
+        setUsername(state, username){
+            state.username = username
+        },
     },
     actions: {},
     modules: {}

@@ -1,37 +1,87 @@
 <script>
+import axios from "axios";
+
 export default {
-  name: 'RegisterServer'
+  name: 'RegisterServer',
+  data() {
+    return {
+      username: "",
+      phone: "",
+      password: "",
+      rePassword: "",
+      code: ""
+    }
+  },
+  methods: {
+    register() {
+      if (!this.username || !this.phone || !this.password || !this.rePassword || !this.code) {
+        alert("请输入完整信息");
+        return;
+      }
+      if (this.password !== this.rePassword) {
+        alert("两次输入的密码不一致");
+        return;
+      }
+      if (this.phone.length !== 11) {
+        alert("手机号格式错误");
+        return;
+      }
+      if (this.password.length < 6) {
+        alert("密码长度不能小于6位");
+        return;
+      }
+     
+      axios.post('/api/user/register', {
+        username: this.username,
+        phone: this.phone,
+        password: this.password
+      }).then(res => {
+            // console.log(res.data)
+            if (res.data.code === 1) {
+              alert("注册成功！")
+              this.username = ""
+              this.phone = ""
+              this.password = ""
+              this.rePassword = ""
+              this.code = ""
+              this.$store.commit('setShowWindowContent', false)
+            } else {
+              alert(res.data.msg)
+            }
+          }
+      ).catch(error => {
+        console.log(error.response)
+      })
+    }
+  },
+  watch: {}
 }
-// var content = document.querySelector('.get_code');
-// document.getElementById('get_codes').onclick = function () {
-//   let codes = Math.floor((Math.random() * (10000 - 1001)) + 1000);
-//   // alert('您的验证码为：' + codes);
-//   let n = content.innerHTML = codes;
-//   // console.log(n);
-// }
 </script>
 
 <template>
   <!-- 注册页面专有模块 start -->
   <div class="log_in_page">
-    <form class="log_in_box" action="http://localhost:3000/html/register.html" method="post">
+    <form class="log_in_box" action="" method="post">
       <div class="input_box_input">
-        <input type="tel" placeholder="请输入手机号" required name="tel">
+        <input type="text" placeholder="请输入名字" v-model="username" required name="username">
       </div>
       <div class="input_box_input">
-        <input type="password" placeholder="设置密码" required name="password">
+        <input type="tel" placeholder="请输入手机号" v-model="phone" required name="tel">
       </div>
       <div class="input_box_input">
-        <input type="password" placeholder="确定密码" required name="repassword">
+        <input type="password" placeholder="设置密码" v-model="password" required name="password">
+      </div>
+      <div class="input_box_input">
+        <input type="password" placeholder="确定密码" v-model="rePassword" required name="repassword">
       </div>
       <div class="input_box_input">
         <div class="code">
-          <input type="text" placeholder="请输入验证码" required name="code">
+          <input type="text" placeholder="请输入验证码" v-model="code" required name="code">
           <span class="get_code style_red" id="get_codes" name="getcode">获取验证码</span>
         </div>
       </div>
       <div class="input_box">
-        <button type="submit" name="submit" value="注册">注册</button>
+        <button type="submit" @click="register" name="submit" value="注册">注册</button>
       </div>
       <div class="input_box_am">
         <input type="checkbox">我同意狗狗网<a href="#">用户协议</a>和<a href="#">隐私政策</a>
@@ -73,7 +123,7 @@ input {
   width: 300px;
   height: 60px;
   font-size: 18px;
-  margin-top: 30px;
+  margin-top: 10px;
   padding-left: 15px;
   background-color: #eabd4c;
 }
@@ -91,7 +141,7 @@ input {
   text-align: center;
   line-height: 50px;
   right: 52px;
-  top: 34px;
+  top: 14px;
   background-color: #eabd4c;
   cursor: pointer;
 }

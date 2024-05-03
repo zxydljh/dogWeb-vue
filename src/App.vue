@@ -85,10 +85,14 @@ export default {
       this.currentPopupComponent = null;
     },
   },
-  // 路由守卫
-  // beforeRouteUpdate(to, from, next) {
-  //
-  // },
+  // 判断username是否有值，有值则不显示登录窗口
+  watch: {
+    '$store.state.username'(newUsername) {
+      if (newUsername) {
+        this.showWindowContent = false;
+      }
+    }
+  },
 }
 </script>
 

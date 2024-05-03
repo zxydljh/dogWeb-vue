@@ -1,29 +1,51 @@
-<script>
+<script> 
 import axios from "axios";
+import {mapState} from "vuex";
 
 export default {
   name: 'LoginServer',
   data() {
     return {
       loading: false,
-      phone: '13577777777',
-      password: ''
+      phone: "",
+      password: "",
+      loginShow: true
     };
+  },
+  computed:{
+    ...mapState(['username']),
+  },
+  mounted(){
+    if(!this.username){
+      this.loginShow = true
+    }
   },
   methods: {
     login() {
+      if (!this.phone || !this.password) {
+        alert("手机号和密码不能为空");
+        return;
+      }
+
       axios.post('/api/user/login', {
         // TODO 待解决动态绑定数据，安全问题导致页面请求失败
-        phone: '13577777777',
-        password: '123456'
+        phone: this.phone,
+        password: this.password
       }).then(res => {
-            // console.log(res.data)
+            console.log(res.data)
             if (res.data.code === 1) {
-              this.$store.commit('setLoaded',true)
-              this.$store.commit('setPhoneNumber',this.phone) // 登录成功，保存电话号码到 Vuex
-              // this.$router.push('/index')
+              this.$store.commit('setLoaded', true)  // 用于快捷导航栏，显示用户名称
+              this.$store.commit('setPhoneNumber',this.phone)  // 显示电话号
+              this.$store.commit('setUsername', res.data.data.name)  // 显示名称
+              alert("登录成功！")
+
+              if(this.username){
+                this.loginShow = false
+              }
+
             } else {
               this.loading = false
+              alert(res.data.msg)
             }
           }
       ).catch(error => {
@@ -36,8 +58,11 @@ export default {
 
 <template>
   <!-- 登录页面专有模块 start -->
-  <div class="log_in_page">
-    <form class="log_in_box" action="" method="post">
+  <div class="log_in_page" v-if="loginShow">
+<!--    <form class="log_in_box" action="" method="post">-->
+
+<!--    </form>-->
+    <div class="log_in_box">
       <div class="input_box_input">
         <input type="tel" v-model="phone" placeholder="手机号" required name="tel">
       </div>
@@ -56,7 +81,7 @@ export default {
         <span class="qq"><a href="javascript:;"></a></span>
         <span class="vx"><a href="javascript:;"></a></span>
       </div>
-    </form>
+    </div>
   </div>
   <!-- 登录页面专有模块 end -->
 </template>
