@@ -5,7 +5,6 @@ export default createStore({
         phoneNumber: '',
         loaded: false,
         username: '',
-        loggedStatus: false
     },
     mutations: {
         setPhoneNumber(state, phoneNumber) {

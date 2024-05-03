@@ -26,9 +26,14 @@ export default {
         alert("手机号和密码不能为空");
         return;
       }
+      
+      if (document.getElementById("agree").checked === false) {
+        alert("请勾选用户协议");
+        return;
+      }
 
       axios.post('/api/user/login', {
-        // TODO 待解决动态绑定数据，安全问题导致页面请求失败
+        // 已解决动态绑定数据，安全问题导致页面请求失败
         phone: this.phone,
         password: this.password
       }).then(res => {
@@ -74,7 +79,7 @@ export default {
         <button v-else name="submit">登录中...</button>
       </div>
       <div class="input_box_am">
-        <input type="checkbox">我同意狗狗网<a href="#">用户协议</a>和<a href="javascript:;">隐私政策</a>
+        <input type="checkbox" id="agree">我同意狗狗网<a href="#">用户协议</a>和<a href="javascript:;">隐私政策</a>
       </div>
       <div class="input_box_else">
         <h3>其他方式登录</h3>

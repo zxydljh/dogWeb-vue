@@ -13,7 +13,14 @@ export default {
     }
   },
   methods: {
-    register() {
+    getCode() {
+      let code = Math.random().toString(36).substring(2, 6);
+      document.getElementById("get_codes").innerHTML = code;
+    },
+     
+    register(event) {
+      event.preventDefault(); // 阻止表单默认提交行为
+
       if (!this.username || !this.phone || !this.password || !this.rePassword || !this.code) {
         alert("请输入完整信息");
         return;
@@ -30,7 +37,15 @@ export default {
         alert("密码长度不能小于6位");
         return;
       }
-     
+      if (document.getElementById("agree").checked === false) {
+        alert("请勾选用户协议");
+        return;
+      }
+      if (this.code !== document.getElementById("get_codes").innerHTML) {
+        alert("验证码错误");
+        return;
+      }
+
       axios.post('/api/user/register', {
         username: this.username,
         phone: this.phone,
@@ -77,14 +92,14 @@ export default {
       <div class="input_box_input">
         <div class="code">
           <input type="text" placeholder="请输入验证码" v-model="code" required name="code">
-          <span class="get_code style_red" id="get_codes" name="getcode">获取验证码</span>
+          <span class="get_code style_red" id="get_codes" @click="getCode" name="getcode">获取验证码</span>
         </div>
       </div>
       <div class="input_box">
         <button type="submit" @click="register" name="submit" value="注册">注册</button>
       </div>
       <div class="input_box_am">
-        <input type="checkbox">我同意狗狗网<a href="#">用户协议</a>和<a href="#">隐私政策</a>
+        <input type="checkbox" id="agree">我同意狗狗网<a href="#">用户协议</a>和<a href="#">隐私政策</a>
       </div>
       <div class="input_box_else">
         <h3>其他方式登录</h3>
