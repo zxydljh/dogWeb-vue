@@ -1,6 +1,13 @@
 <script>
 export default {
-  name: 'MemberServer'
+  name: 'MemberServer',
+  methods: {
+    buyMember() {
+      this.$store.commit('setPrice', '328')
+      this.$store.commit('setShowWindowContent', true)
+      this.$store.commit('setPayType', 'member')
+    }
+  }
 }
 </script>
 
@@ -20,9 +27,9 @@ export default {
       </div>
       <div class="cost">
         <div class="price">
-          <span>228￥/年<i>1220￥/年</i></span>
+          <span>328￥/年<i>1220￥/年</i></span>
         </div>
-        <div class="buy"><a href="#">点击购买</a></div>
+        <div class="buy"><a @click="buyMember">点击购买</a></div>
       </div>
     </div>
   </div>
@@ -41,7 +48,7 @@ export default {
   margin: 10px auto 0;
 }
 
-.member:hover{
+.member:hover {
   cursor: default;
 }
 
@@ -70,7 +77,7 @@ export default {
   justify-content: center;
 }
 
-.discount{
+.discount {
   font-size: 24px;
   color: orange;
 }
@@ -100,5 +107,9 @@ export default {
 .cost .buy a {
   color: #fff;
   font-weight: 700;
+}
+
+.buy a:hover {
+  cursor: pointer;
 }
 </style>

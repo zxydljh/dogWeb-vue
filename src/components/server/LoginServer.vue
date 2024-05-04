@@ -1,4 +1,4 @@
-<script> 
+<script>
 import axios from "axios";
 import {mapState} from "vuex";
 
@@ -12,11 +12,11 @@ export default {
       loginShow: true
     };
   },
-  computed:{
+  computed: {
     ...mapState(['username']),
   },
-  mounted(){
-    if(!this.username){
+  mounted() {
+    if (!this.username) {
       this.loginShow = true
     }
   },
@@ -26,7 +26,7 @@ export default {
         alert("手机号和密码不能为空");
         return;
       }
-      
+
       if (document.getElementById("agree").checked === false) {
         alert("请勾选用户协议");
         return;
@@ -40,11 +40,14 @@ export default {
             console.log(res.data)
             if (res.data.code === 1) {
               this.$store.commit('setLoaded', true)  // 用于快捷导航栏，显示用户名称
-              this.$store.commit('setPhoneNumber',this.phone)  // 显示电话号
-              this.$store.commit('setUsername', res.data.data.name)  // 显示名称
+              this.$store.commit('setPhoneNumber', this.phone)  // 显示电话号
+              this.$store.commit('setUsername', res.data.data.name)  // 用于显示名称
+              this.$store.commit('setId', res.data.data.id)
+              this.$store.commit('setMember', res.data.data.member)
+              this.$store.commit('setAvatar',res.data.data.avatar)
               alert("登录成功！")
 
-              if(this.username){
+              if (this.username) {
                 this.loginShow = false
               }
 
@@ -64,9 +67,9 @@ export default {
 <template>
   <!-- 登录页面专有模块 start -->
   <div class="log_in_page" v-if="loginShow">
-<!--    <form class="log_in_box" action="" method="post">-->
+    <!--    <form class="log_in_box" action="" method="post">-->
 
-<!--    </form>-->
+    <!--    </form>-->
     <div class="log_in_box">
       <div class="input_box_input">
         <input type="tel" v-model="phone" placeholder="手机号" required name="tel">

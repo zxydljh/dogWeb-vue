@@ -49,6 +49,7 @@ import AttentionServer from "@/components/server/AttentionServer.vue";
 import MemberServer from "@/components/server/MemberServer.vue";
 import LoginServer from "@/components/server/LoginServer.vue";
 import RegisterServer from "@/components/server/RegisterServer.vue";
+import PayServer from "@/components/payView/index.vue";
 
 export default {
   name: 'App',
@@ -71,7 +72,8 @@ export default {
         'attention': AttentionServer,
         'member': MemberServer,
         'login': LoginServer,
-        'register': RegisterServer
+        'register': RegisterServer,
+        'pay': PayServer
       },
     };
   },
@@ -85,11 +87,18 @@ export default {
       this.currentPopupComponent = null;
     },
   },
-  // 判断username是否有值，有值则不显示登录窗口
+
   watch: {
+    // 判断username是否有值，有值则不显示登录窗口
     '$store.state.username'(newUsername) {
       if (newUsername) {
         this.showWindowContent = false;
+      }
+    },
+    '$store.state.price'(newPrice) {
+      if (newPrice) {
+        this.showWindowContent = true;
+        this.currentPopupComponent = PayServer;
       }
     }
   },
