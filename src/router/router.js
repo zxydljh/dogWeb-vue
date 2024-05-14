@@ -1,4 +1,5 @@
-import {createRouter, createWebHistory} from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
+import store from '@/store/index';
 
 // 导航栏组件
 import Index from "../components/index/IndexProprietaryPage.vue"
@@ -92,7 +93,8 @@ const routes = [
             mainContent: ShoppingCar,
         },
         meta: {
-            active: 'shoppingCar'
+            active: 'shoppingCar',
+            requiresAuth: true
         }
     },
 ];
@@ -114,4 +116,19 @@ var router = createRouter({
     }
 });
 
+// 全局路由守卫
+router.beforeEach((to, from, next) => {
+    // 检查路由是否需要登录权限
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        // 检查用户是否已登录，登录状态保存在 store 中的 loaded 变量中
+        if (!store.state.loaded) {
+            window.alert("请先登录");
+        } else {
+            next();
+        }
+    } else {
+        // 路由不需要登录权限，直接放行
+        next();
+    }
+});
 export default router;

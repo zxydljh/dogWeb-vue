@@ -1,7 +1,8 @@
-import {createStore} from "vuex";
+import { createStore } from "vuex";
 
 export default createStore({
     state: {
+        token: '',
         id: '',
         phoneNumber: '',
         loaded: false,
@@ -12,6 +13,9 @@ export default createStore({
         avatar: ''
     },
     mutations: {
+        setToken(state, token) {
+            state.token = token
+        },
         setPhoneNumber(state, phoneNumber) {
             state.phoneNumber = phoneNumber
         },

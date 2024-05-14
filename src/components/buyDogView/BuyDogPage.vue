@@ -1,19 +1,25 @@
 <script>
+import axios from 'axios'
 export default {
-  name:'BuyDogPage'
+  name: 'BuyDogPage',
+  methods: {
+    purchase() {
+      // 判断用户是否登录
+      if (this.$store.state.id === '') {
+        alert('请先登录')
+        return
+      }
+      axios({
+        method: 'post',
+        url: '/api/user/purchase',
+        data: {
+          // 对应商品的数据
+        }
+      })
+    }
+  }
+  
 }
-// var buy_dog = document.querySelector('.buy_dog')
-// var expenditurs = document.getElementsByClassName('.expenditur')
-// var abs = buy_dog.querySelectorAll('a')
-// var car = document.querySelector('.car')
-// var sum = document.getElementById('sum')
-// for (let i = 0; i < abs.length; i++) {
-//   abs[i].setAttribute('index', i);
-//   abs[i].onclick = (function () {
-//     sum.innerHTML++;
-//     sum.style.display = 'block';
-//   })
-// }
 </script>
 
 <template>
@@ -30,8 +36,8 @@ export default {
           <p>疫苗：已接种3针</p>
         </div>
         <div class="expenditure">
-          <span>2500￥</span>
-          <a href="javascript:;">购买</a>
+          <span>￥2500</span>
+          <a @click="purchase()">购买</a>
         </div>
       </div>
       <div class="store">
@@ -44,7 +50,7 @@ export default {
           <p>疫苗：已接种3针</p>
         </div>
         <div class="expenditure">
-          <span>2000￥</span>
+          <span>￥2000</span>
           <a href="javascript:;">购买</a>
         </div>
       </div>
@@ -58,7 +64,7 @@ export default {
           <p>疫苗：已接种3针</p>
         </div>
         <div class="expenditure">
-          <span>2500￥</span>
+          <span>￥2500</span>
           <a href="javascript:;">购买</a>
         </div>
       </div>
@@ -217,7 +223,7 @@ export default {
           <p>疫苗：已接种3针</p>
         </div>
         <div class="expenditure">
-          <span>2000￥</span>
+          <span>￥2000</span>
           <a href="javascript:;">购买</a>
         </div>
       </div>

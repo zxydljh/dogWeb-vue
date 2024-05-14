@@ -4,7 +4,6 @@ export default {
   methods: {
     buyMember() {
       this.$store.commit('setPrice', '328')
-      this.$store.commit('setShowWindowContent', true)
       this.$store.commit('setPayType', 'member')
     }
   }

@@ -59,7 +59,6 @@ export default {
               this.password = ""
               this.rePassword = ""
               this.code = ""
-              this.$store.commit('setShowWindowContent', false)
             } else {
               alert(res.data.msg)
             }

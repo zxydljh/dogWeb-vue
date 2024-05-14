@@ -37,6 +37,7 @@ export default {
               this.paymentResult = "支付成功"
             else
               this.paymentResult = response.data.msg
+            this.$store.commit("setPrice",'')
           })
           .catch(error => {
             console.log(error)

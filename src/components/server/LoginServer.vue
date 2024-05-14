@@ -6,6 +6,7 @@ export default {
   name: 'LoginServer',
   data() {
     return {
+      token: '',
       loading: false,
       phone: "",
       password: "",
@@ -39,6 +40,7 @@ export default {
       }).then(res => {
             console.log(res.data)
             if (res.data.code === 1) {
+              this.$store.commit('setToken', res.data.data.token)
               this.$store.commit('setLoaded', true)  // 用于快捷导航栏，显示用户名称
               this.$store.commit('setPhoneNumber', this.phone)  // 显示电话号
               this.$store.commit('setUsername', res.data.data.name)  // 用于显示名称
