@@ -1,5 +1,7 @@
 <script>
-import axios from "axios";
+// import axios from "axios";
+import {userLogout} from "@/api/loginout";
+import { ElMessage } from 'element-plus'
 
 export default {
   name: 'RegisterServer',
@@ -17,54 +19,73 @@ export default {
       let code = Math.random().toString(36).substring(2, 6);
       document.getElementById("get_codes").innerHTML = code;
     },
-     
+
     register(event) {
       event.preventDefault(); // 阻止表单默认提交行为
 
       if (!this.username || !this.phone || !this.password || !this.rePassword || !this.code) {
-        alert("请输入完整信息");
+        ElMessage("请输入完整信息");
         return;
       }
       if (this.password !== this.rePassword) {
-        alert("两次输入的密码不一致");
+        ElMessage("两次输入的密码不一致");
         return;
       }
       if (this.phone.length !== 11) {
-        alert("手机号格式错误");
+        ElMessage("手机号格式错误");
         return;
       }
       if (this.password.length < 6) {
-        alert("密码长度不能小于6位");
+        ElMessage("密码长度不能小于6位");
         return;
       }
       if (document.getElementById("agree").checked === false) {
-        alert("请勾选用户协议");
+        ElMessage("请勾选用户协议");
         return;
       }
       if (this.code !== document.getElementById("get_codes").innerHTML) {
-        alert("验证码错误");
+        ElMessage.error("验证码错误");
         return;
       }
 
-      axios.post('/api/user/register', {
+      // axios.post('/api/user/register', {
+      //   username: this.username,
+      //   phone: this.phone,
+      //   password: this.password
+      // }).then(res => {
+      //       // console.log(res.data)
+      //       if (res.data.code === 1) {
+      //         ElMessage("注册成功！")
+      //         this.username = ""
+      //         this.phone = ""
+      //         this.password = ""
+      //         this.rePassword = ""
+      //         this.code = ""
+      //       } else {
+      //         ElMessage(res.data.msg)
+      //       }
+      //     }
+      // ).catch(error => {
+      //   console.log(error.response)
+      // })
+      userLogout({
         username: this.username,
         phone: this.phone,
         password: this.password
       }).then(res => {
-            // console.log(res.data)
             if (res.data.code === 1) {
-              alert("注册成功！")
+              ElMessage.success("注册成功！")
               this.username = ""
               this.phone = ""
               this.password = ""
               this.rePassword = ""
               this.code = ""
             } else {
-              alert(res.data.msg)
+              ElMessage(res.data.msg)
             }
           }
       ).catch(error => {
-        console.log(error.response)
+        ElMessage.error(error.message)
       })
     }
   },

@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import axios from "axios";
 import store from "@/store";
+import ElementPlus from 'element-plus'
 
 import {client} from "@/utils/alioss"
 
@@ -10,6 +11,7 @@ import router from "@/router/router"
 
 const app = createApp(App);
 
+app.use(ElementPlus)
 app.use(router)
 app.use(store)
 

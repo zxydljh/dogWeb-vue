@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import store from '@/store/index';
+import { ElMessage } from 'element-plus'
 
 // 导航栏组件
 import Index from "../components/index/IndexProprietaryPage.vue"
@@ -97,6 +98,10 @@ const routes = [
             requiresAuth: true
         }
     },
+    {
+        path: '/:pathMatch(.*)*',
+        redirect: '/index'
+    }
 ];
 
 var router = createRouter({
@@ -122,7 +127,7 @@ router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
         // 检查用户是否已登录，登录状态保存在 store 中的 loaded 变量中
         if (!store.state.loaded) {
-            window.alert("请先登录");
+            ElMessage.warning("请先登录");
         } else {
             next();
         }

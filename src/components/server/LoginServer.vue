@@ -1,6 +1,9 @@
 <script>
-import axios from "axios";
-import {mapState} from "vuex";
+// import axios from "axios";
+import { mapState } from "vuex";
+import {userLogin} from "@/api/loginout";
+import 'element-plus/es/components/message/style/css'
+import { ElMessage } from 'element-plus'
 
 export default {
   name: 'LoginServer',
@@ -24,21 +27,50 @@ export default {
   methods: {
     login() {
       if (!this.phone || !this.password) {
-        alert("手机号和密码不能为空");
+        ElMessage("手机号和密码不能为空");
         return;
       }
 
       if (document.getElementById("agree").checked === false) {
-        alert("请勾选用户协议");
+        ElMessage("请勾选用户协议");
         return;
       }
 
-      axios.post('/api/user/login', {
-        // 已解决动态绑定数据，安全问题导致页面请求失败
+      // axios.post('/api/user/login', {
+      //   // 已解决动态绑定数据，安全问题导致页面请求失败
+      //   phone: this.phone,
+      //   password: this.password
+      // }).then(res => {
+      //       console.log(res.data)
+      //       if (res.data.code === 1) {
+      //         this.$store.commit('setToken', res.data.data.token)
+      //         this.$store.commit('setLoaded', true)  // 用于快捷导航栏，显示用户名称
+      //         this.$store.commit('setPhoneNumber', this.phone)  // 显示电话号
+      //         this.$store.commit('setUsername', res.data.data.name)  // 用于显示名称
+      //         this.$store.commit('setId', res.data.data.id)
+      //         this.$store.commit('setMember', res.data.data.member)
+      //         this.$store.commit('setAvatar',res.data.data.avatar)
+      //         ElMessage("登录成功！")
+      //
+      //         if (this.username) {
+      //           this.loginShow = false
+      //         }
+      //
+      //       } else {
+      //         this.loading = false
+      //         ElMessage(res.data.msg)
+      //       }
+      //     }
+      // ).catch(error => {
+      //   console.log(error)
+      //   ElMessage(error.message)
+      // })
+
+      userLogin({
         phone: this.phone,
         password: this.password
       }).then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             if (res.data.code === 1) {
               this.$store.commit('setToken', res.data.data.token)
               this.$store.commit('setLoaded', true)  // 用于快捷导航栏，显示用户名称
@@ -46,8 +78,8 @@ export default {
               this.$store.commit('setUsername', res.data.data.name)  // 用于显示名称
               this.$store.commit('setId', res.data.data.id)
               this.$store.commit('setMember', res.data.data.member)
-              this.$store.commit('setAvatar',res.data.data.avatar)
-              alert("登录成功！")
+              this.$store.commit('setAvatar', res.data.data.avatar)
+              ElMessage.success("登录成功！")
 
               if (this.username) {
                 this.loginShow = false
@@ -55,11 +87,12 @@ export default {
 
             } else {
               this.loading = false
-              alert(res.data.msg)
+              ElMessage.error(res.data.msg)
             }
           }
       ).catch(error => {
-        console.log(error.response)
+        // console.log(error)
+        ElMessage.error(error.message)
       })
     }
   }

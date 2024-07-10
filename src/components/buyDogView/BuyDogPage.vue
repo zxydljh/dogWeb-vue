@@ -1,12 +1,14 @@
 <script>
 import axios from 'axios'
+import {ElMessage} from 'element-plus'
+
 export default {
   name: 'BuyDogPage',
   methods: {
     purchase() {
       // 判断用户是否登录
       if (this.$store.state.id === '') {
-        alert('请先登录')
+        ElMessage('请先登录')
         return
       }
       axios({
@@ -15,10 +17,20 @@ export default {
         data: {
           // 对应商品的数据
         }
+      }).then(() => {
+        ElMessage({
+          type: 'success',
+          message: '请求成功'
+        })
+      }).catch(() => {
+        ElMessage({
+          type: 'error',
+          message: '请求失败'
+        })
       })
     }
   }
-  
+
 }
 </script>
 
