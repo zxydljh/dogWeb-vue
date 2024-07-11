@@ -1,5 +1,5 @@
 <script>
-import {getBuyDogList} from "@/api/buydog";
+import {getBuyDogList,saveToShoppingCart} from "@/api/buydog";
 import {ElMessage} from 'element-plus'
 
 export default {
@@ -10,14 +10,23 @@ export default {
     };
   },
   methods: {
-    purchase() {
+    purchase(row) {
       // 判断用户是否登录
       if (this.$store.state.id === '') {
         ElMessage('请先登录')
         return
       }
-      // TODO 添加到购物车
-
+      // 添加到购物车
+      saveToShoppingCart({
+        userId: this.$store.state.id,
+        dogId: row.id,
+        price: row.price,
+        description: row.description
+      }).then(() => {
+        ElMessage.success('添加成功')
+      }).catch((err) => {
+        ElMessage.error('添加失败' + err)
+      })
     }
   },
   created() {
@@ -56,7 +65,7 @@ export default {
         </div>
         <div class="expenditure">
           <span>￥{{ dog.price }}</span>
-          <a @click="purchase()" title="添加到购物车">添加</a>
+          <a @click="purchase(dog)" title="添加到购物车">添加</a>
         </div>
       </div>
 
