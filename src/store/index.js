@@ -2,7 +2,7 @@ import { createStore } from "vuex";
 
 export default createStore({
     state: {
-        token: '',
+        token: localStorage.getItem('userAuthToken') || '',
         id: '',
         phoneNumber: '',
         loaded: false,
@@ -15,6 +15,7 @@ export default createStore({
     mutations: {
         setToken(state, token) {
             state.token = token
+            localStorage.setItem('userAuthToken', token)
         },
         setPhoneNumber(state, phoneNumber) {
             state.phoneNumber = phoneNumber

@@ -15,10 +15,10 @@ service.interceptors.request.use(
         config.data = JSON.stringify(config.data)
 
         // 配置token
-        const authToken = localStorage.getItem('authToken')
-        // console.log('token' + authToken)
-        if (authToken) {
-            config.headers.authToken = authToken
+        const userAuthToken = localStorage.getItem('userAuthToken')
+        // console.log('token' + userAuthToken)
+        if (userAuthToken) {
+            config.headers.userAuthToken = userAuthToken
         }
 
         // get请求映射params参数

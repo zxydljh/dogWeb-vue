@@ -1,9 +1,14 @@
 <script>
-import axios from 'axios'
+import {getBuyDogList} from "@/api/buydog";
 import {ElMessage} from 'element-plus'
 
 export default {
   name: 'BuyDogPage',
+  data() {
+    return {
+      dogs: []  // 存储后端返回的狗狗数据
+    };
+  },
   methods: {
     purchase() {
       // 判断用户是否登录
@@ -11,24 +16,17 @@ export default {
         ElMessage('请先登录')
         return
       }
-      axios({
-        method: 'post',
-        url: '/api/user/purchase',
-        data: {
-          // 对应商品的数据
-        }
-      }).then(() => {
-        ElMessage({
-          type: 'success',
-          message: '请求成功'
-        })
-      }).catch(() => {
-        ElMessage({
-          type: 'error',
-          message: '请求失败'
-        })
-      })
+      // TODO 添加到购物车
+
     }
+  },
+  created() {
+    getBuyDogList().then((res) => {
+      this.dogs = res.data.data
+      ElMessage.success('获取数据成功')
+    }).catch((err) => {
+      ElMessage.error('获取数据失败' + err)
+    })
   }
 
 }
@@ -38,9 +36,33 @@ export default {
   <!-- buy_dog页面专有模块 start -->
   <div class="buy_dog w">
     <div class="buy_dog_content">
+
+      <!--   遍历返回的数组，渲染上去   -->
+      <div class="store" v-for="dog in dogs" :key="dog.id">
+        <div class="srore_img">
+          <a href="javascript:;">
+            <img :src="dog.image" alt="">
+          </a>
+        </div>
+        <div class="character">
+          <h2>
+            <a href="javascript:;">
+              {{ dog.description }}
+            </a>
+          </h2>
+          <p>犬种：{{ dog.blood }} {{ dog.sex }} 有血统证书</p>
+          <p>地点：{{ dog.address }}</p>
+          <p>疫苗：三针</p>
+        </div>
+        <div class="expenditure">
+          <span>￥{{ dog.price }}</span>
+          <a @click="purchase()" title="添加到购物车">添加</a>
+        </div>
+      </div>
+
       <div class="store">
-        <div class="srore_img"><a href="javascript:;"><img
-            src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/chaiquan_1.jpeg" alt=""></a></div>
+        <div class="srore_img"><a href="javascript:;">
+          <img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/chaiquan_1.jpeg" alt=""></a></div>
         <div class="character">
           <h2><a href="javascript:;"><i>[热销]</i>出售日本纯种健康柴犬支持上门自提/全国送货</a></h2>
           <p>犬种：柴犬 母（MM） 有血统证书</p>
@@ -308,10 +330,6 @@ export default {
   margin-bottom: 20px;
 }
 
-.character h2 i {
-  color: rgb(212, 18, 18);
-}
-
 .character p {
   margin-bottom: 20px;
 }
@@ -333,5 +351,9 @@ export default {
 .store .expenditure a {
   color: #fff;
   margin-left: 20px;
+}
+
+.store .expenditure a:hover {
+  cursor: default;
 }
 </style>
