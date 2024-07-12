@@ -1,110 +1,129 @@
 <script>
-export default {
-  name:'ShoppingCar',
+import {getListByUserId} from "@/api/shoppingcart";
+import {ElMessage} from "element-plus";
 
+export default {
+  name: 'ShoppingCar',
+  data() {
+    return {
+      userId: null,
+      shoppingCartList: [],
+      selectedItems: []
+    }
+  },
+  created() {
+    this.userId = this.$store.state.id;
+  },
+  mounted() {
+    if (this.userId) {
+      getListByUserId(this.userId).then(response => {
+        this.shoppingCartList = response.data.data;
+        // console.log(this.shoppingCartList);
+      }).catch(() => {
+        ElMessage.error("获取购物车数据失败！")
+      });
+    } else {
+      ElMessage.error("请先登录！");
+    }
+  },
+  methods: {
+    increment(item) {
+      item.number++;
+    },
+    decrement(item) {
+      if (item.number > 1) {
+        item.number--;
+      }
+    },
+    deleteItem(item) {
+      this.shoppingCartList = this.shoppingCartList.filter(cartItem => cartItem.id !== item.id);
+    },
+    toggleSelect(item) {
+      if (this.selectedItems.includes(item)) {
+        this.selectedItems = this.selectedItems.filter(selected => selected.id !== item.id);
+      } else {
+        this.selectedItems.push(item);
+      }
+    },
+    selectAll() {
+      if (this.selectedItems.length === this.shoppingCartList.length) {
+        this.selectedItems = [];
+      } else {
+        this.selectedItems = [...this.shoppingCartList];
+      }
+    },
+    deleteSelected() {
+      this.shoppingCartList = this.shoppingCartList.filter(cartItem => !this.selectedItems.includes(cartItem));
+      this.selectedItems = [];
+    }
+  },
+  computed: {
+    totalPrice() {
+      return this.shoppingCartList.reduce((total, item) => {
+        if (this.selectedItems.includes(item)) {
+          return total + item.price * item.number;
+        }
+        return total;
+      }, 0);
+    }
+  }
 }
 </script>
 
 <template>
   <!-- shoppingcar页面专有模块 -->
-    <div class="w">
-      <!-- 购物车主要核心区域 -->
-      <div class="cart-warp">
-        <!-- 头部全选模块 -->
-        <div class="cart-thead">
-          <div class="t-checkbox">
-            <input type="checkbox" name="" id="" class="checkall"> 全选
-          </div>
-          <div class="t-goods">心动宠物</div>
-          <div class="t-price">价格</div>
-          <div class="t-num">数量</div>
-          <div class="t-sum">小计</div>
-          <div class="t-action">操作</div>
+  <div class="w">
+    <div class="cart-warp">
+      <div class="cart-thead">
+        <div class="t-checkbox">
+          <input type="checkbox" @change="selectAll" :checked="selectedItems.length === shoppingCartList.length"> 全选
         </div>
-        <!-- 商品详细模块 -->
-        <div class="cart-item-list">
-          <div class="cart-item check-cart-item">
-            <div class="p-checkbox">
-              <input type="checkbox" name="" id="" checked class="j-checkbox">
-            </div>
-            <div class="p-goods">
-              <div class="p-img">
-                <img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/chaiquan_1.jpeg" alt="">
-              </div>
-              <div class="p-msg">日本纯种健康柴犬</div>
-            </div>
-            <div class="p-price">￥2500</div>
-            <div class="p-num">
-              <div class="quantity-form">
-                <a href="javascript:;" class="decrement">-</a>
-                <input type="text" class="itxt" value="1">
-                <a href="javascript:;" class="increment">+</a>
-              </div>
-            </div>
-            <div class="p-sum">￥2500</div>
-            <div class="p-action"><a href="javascript:;">删除</a></div>
-          </div>
-          <div class="cart-item">
-            <div class="p-checkbox">
-              <input type="checkbox" name="" id="" class="j-checkbox">
-            </div>
-            <div class="p-goods">
-              <div class="p-img">
-                <img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/bagequan_1.jpeg" alt="">
-              </div>
-              <div class="p-msg">纯种健康八哥犬</div>
-            </div>
-            <div class="p-price">￥2000</div>
-            <div class="p-num">
-              <div class="quantity-form">
-                <a href="javascript:;" class="decrement">-</a>
-                <input type="text" class="itxt" value="1">
-                <a href="javascript:;" class="increment">+</a>
-              </div>
-            </div>
-            <div class="p-sum">￥2000</div>
-            <div class="p-action"><a href="javascript:;">删除</a></div>
-          </div>
-          <div class="cart-item">
-            <div class="p-checkbox">
-              <input type="checkbox" name="" id="" class="j-checkbox">
-            </div>
-            <div class="p-goods">
-              <div class="p-img">
-                <img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/hashiqi_1.jpeg" alt="">
-              </div>
-              <div class="p-msg">纯种健康哈士奇</div>
-            </div>
-            <div class="p-price">￥2500</div>
-            <div class="p-num">
-              <div class="quantity-form">
-                <a href="javascript:;" class="decrement">-</a>
-                <input type="text" class="itxt" value="1">
-                <a href="javascript:;" class="increment">+</a>
-              </div>
-            </div>
-            <div class="p-sum">￥2500</div>
-            <div class="p-action"><a href="javascript:;">删除</a></div>
-          </div>
-        </div>
+        <div class="t-goods">心动宠物</div>
+        <div class="t-price">价格</div>
+        <div class="t-num">数量</div>
+        <div class="t-sum">小计</div>
+        <div class="t-action">操作</div>
+      </div>
 
-        <!-- 结算模块 -->
-        <div class="cart-floatbar">
-          <div class="select-all">
-            <input type="checkbox" name="" id="" class="checkall">全选
+      <div class="cart-item-list">
+        <div v-for="item in shoppingCartList" :key="item.id" class="cart-item" :class="{ 'check-cart-item': selectedItems.includes(item) }">
+          <div class="p-checkbox">
+            <input type="checkbox" @change="toggleSelect(item)" :checked="selectedItems.includes(item)">
           </div>
-          <div class="operation">
-            <a href="javascript:;" class="remove-batch"> 删除选中的商品</a>
-            <a href="javascript:;" class="clear-all">清理购物车</a>
+          <div class="p-goods">
+            <div class="p-img">
+              <img :src="item.image || 'https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/2639911832-5dc22641c4113_fix732.png'" alt="">
+            </div>
+            <div class="p-msg">{{ item.description }}</div>
           </div>
-          <div class="toolbar-right">
-            <div class="amount-sum">已经选<em>1</em>件商品</div>
-            <div class="price-sum">总价： <em>￥12.60</em></div>
-            <a href="javascript:;" class="btn-area">去结算</a>
+          <div class="p-price">￥{{ item.price }}</div>
+          <div class="p-num">
+            <div class="number-form">
+              <a href="javascript:;" @click="decrement(item)" class="decrement">-</a>
+              <input type="text" class="itxt" v-model.number="item.number" readonly>
+              <a href="javascript:;" @click="increment(item)" class="increment">+</a>
+            </div>
           </div>
+          <div class="p-sum">￥{{ item.price * item.number }}</div>
+          <div class="p-action"><a href="javascript:;" @click="deleteItem(item)">删除</a></div>
+        </div>
+      </div>
+
+      <div class="cart-floatbar">
+        <div class="select-all">
+          <input type="checkbox" @change="selectAll" :checked="selectedItems.length === shoppingCartList.length"> 全选
+        </div>
+        <div class="operation">
+          <a href="javascript:;" @click="deleteSelected" class="remove-batch"> 删除选中的商品</a>
+        </div>
+        <div class="toolbar-right">
+          <div class="amount-sum">已经选 <em>{{ selectedItems.length }}</em> 件商品</div>
+          <div class="price-sum">总价： <em>￥{{ totalPrice }}</em></div>
+          <a href="javascript:;" class="btn-area">去结算</a>
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <style scoped>
@@ -169,7 +188,6 @@ export default {
   padding-top: 14px;
   margin: 15px 0;
   font-size: 16px;
-  line-height: 160px;
 }
 
 .check-cart-item {
@@ -199,15 +217,18 @@ export default {
 .p-msg {
   float: left;
   width: 210px;
+  height: 160px;
   margin: 0 10px;
+  padding-top: 30px;
   font-size: 20px;
 }
 
 .p-price {
   width: 110px;
+  padding-top: 70px;
 }
 
-.quantity-form {
+.number-form {
   width: 80px;
   height: 23px;
 }
@@ -252,8 +273,12 @@ export default {
 .p-sum {
   font-weight: 700;
   width: 145px;
+  padding-top: 70px;
 }
 
+.p-action {
+  padding-top: 70px;
+}
 
 /* 结算模块 */
 .cart-floatbar {
@@ -283,11 +308,6 @@ export default {
   float: left;
   width: 200px;
   margin-left: 40px;
-}
-
-.clear-all {
-  font-weight: 700;
-  margin: 0 20px;
 }
 
 .toolbar-right {

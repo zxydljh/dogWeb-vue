@@ -10,9 +10,6 @@ import BuyDog from "@/components/buyDogView/BuyDogPage.vue"
 import Food from "@/components/foodView/FoodPage.vue";
 import Information from "@/components/informationView/InformationPage.vue";
 import Drugstore from "@/components/drugstoreView/DrugstorePage.vue";
-import ShoppingCar from "@/components/buyDogView/ShoppingCar.vue";
-
-// 服务窗口
 
 const routes = [
     {
@@ -91,7 +88,8 @@ const routes = [
         path: '/shoppingCar',
         name: 'shoppingCar',
         components: {
-            mainContent: ShoppingCar,
+            // 动态渲染购物车组件，延迟加载，避免影响首页加载速度，并解决原来的购物车组件加载不出来的问题
+            mainContent: () => import('@/components/buyDogView/ShoppingCar.vue')
         },
         meta: {
             active: 'shoppingCar',
@@ -128,6 +126,7 @@ router.beforeEach((to, from, next) => {
         // 检查用户是否已登录，登录状态保存在 store 中的 loaded 变量中
         if (!store.state.loaded) {
             ElMessage.warning("请先登录");
+            next(false); // 防止路由跳转
         } else {
             next();
         }

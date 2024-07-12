@@ -102,6 +102,12 @@ export default {
       }
     }
   },
+  mounted() {
+    // 检查初始状态
+    if (this.$store.state.username) {
+      this.showWindowContent = false;
+    }
+  }
 }
 </script>
 
