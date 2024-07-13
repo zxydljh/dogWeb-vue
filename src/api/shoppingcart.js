@@ -24,12 +24,9 @@ export const decrementItemNumber = (userId, itemId) => {
 };
 
 // 删除购物车商品
-export const deleteItem = (userId, itemType, itemId) => {
+export const deleteItem = (userId, itemId) => {
   return request({
     url: `/user/shoppingCart/delete/${userId}/${itemId}`,
-    method: "delete",
-    data: {
-      itemType: itemType
-    }
+    method: "delete"
   });
 };

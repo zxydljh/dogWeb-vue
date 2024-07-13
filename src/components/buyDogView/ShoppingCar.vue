@@ -1,5 +1,5 @@
 <script>
-import {getListByUserId,incrementItemNumber,decrementItemNumber} from "@/api/shoppingcart";
+import {getListByUserId,incrementItemNumber,decrementItemNumber,deleteItem} from "@/api/shoppingcart";
 import {ElMessage} from "element-plus";
 
 export default {
@@ -50,7 +50,12 @@ export default {
       });
     },
     deleteItem(item) {
-      this.shoppingCartList = this.shoppingCartList.filter(cartItem => cartItem.id !== item.id);
+      deleteItem(this.userId,item.id).then(() => {
+        this.shoppingCartList = this.shoppingCartList.filter(cartItem => cartItem.id !== item.id);
+        ElMessage.success("删除成功！");
+      }).catch(() => {
+        ElMessage.error("删除失败！");
+      });
     },
     toggleSelect(item) {
       if (this.selectedItems.includes(item)) {
