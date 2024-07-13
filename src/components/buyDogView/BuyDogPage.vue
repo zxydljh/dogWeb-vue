@@ -20,6 +20,7 @@ export default {
       saveToShoppingCart({
         userId: this.$store.state.id,
         dogId: row.id,
+        image: row.image,
         price: row.price,
         description: row.description
       }).then(() => {
