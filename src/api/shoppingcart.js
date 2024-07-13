@@ -6,3 +6,30 @@ export const getListByUserId = (userId) => {
     method: "get"
   });
 };
+
+// 增加商品数量
+export const incrementItemNumber = (userId, itemId) => {
+  return request({
+    url: `/user/shoppingCart/increment/${userId}/${itemId}`,
+    method: "put"
+  });
+};
+
+// 减少商品数量
+export const decrementItemNumber = (userId, itemId) => {
+  return request({
+    url: `/user/shoppingCart/decrement/${userId}/${itemId}`,
+    method: "put"
+  });
+};
+
+// 删除购物车商品
+export const deleteItem = (userId, itemType, itemId) => {
+  return request({
+    url: `/user/shoppingCart/delete/${userId}/${itemId}`,
+    method: "delete",
+    data: {
+      itemType: itemType
+    }
+  });
+};

@@ -1,5 +1,5 @@
 <script>
-import {getListByUserId} from "@/api/shoppingcart";
+import {getListByUserId,incrementItemNumber,decrementItemNumber} from "@/api/shoppingcart";
 import {ElMessage} from "element-plus";
 
 export default {
@@ -28,12 +28,26 @@ export default {
   },
   methods: {
     increment(item) {
-      item.number++;
+      if (item.number < 99){
+        item.number++;
+      } else {
+        ElMessage.warning("一次下单商品数量不能超过99！");
+      }
+      incrementItemNumber(this.userId,item.id).then(() => {
+        ElMessage.success("数量增加成功！");
+      }).catch(() => {
+        ElMessage.error("数量增加失败！");
+      });
     },
     decrement(item) {
       if (item.number > 1) {
         item.number--;
       }
+      decrementItemNumber(this.userId,item.id).then(() => {
+        ElMessage.success("数量减少成功！");
+      }).catch(() => {
+        ElMessage.error("数量减少失败！");
+      });
     },
     deleteItem(item) {
       this.shoppingCartList = this.shoppingCartList.filter(cartItem => cartItem.id !== item.id);
