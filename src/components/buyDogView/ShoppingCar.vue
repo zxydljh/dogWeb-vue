@@ -1,5 +1,5 @@
 <script>
-import {getListByUserId,incrementItemNumber,decrementItemNumber,deleteItem} from "@/api/shoppingcart";
+import {getListByUserId,incrementItemNumber,decrementItemNumber,deleteItem,deleteSelectedItem} from "@/api/shoppingcart";
 import {ElMessage} from "element-plus";
 
 export default {
@@ -58,9 +58,11 @@ export default {
       });
     },
     toggleSelect(item) {
+      // 如果商品包含在选中列表中，则从选中列表中移除
       if (this.selectedItems.includes(item)) {
         this.selectedItems = this.selectedItems.filter(selected => selected.id !== item.id);
       } else {
+        // 将商品添加到选中列表中
         this.selectedItems.push(item);
       }
     },
@@ -72,8 +74,20 @@ export default {
       }
     },
     deleteSelected() {
-      this.shoppingCartList = this.shoppingCartList.filter(cartItem => !this.selectedItems.includes(cartItem));
-      this.selectedItems = [];
+      if (this.selectedItems.length === 0) {
+        ElMessage.warning("请选择要删除的商品！");
+        return;
+      }
+      // 获取选中的商品id列表
+      const itemIds = this.selectedItems.map(item => item.id);
+      console.log(itemIds)
+      deleteSelectedItem(this.userId,itemIds).then(() => {
+        this.shoppingCartList = this.shoppingCartList.filter(cartItem => !this.selectedItems.includes(cartItem));
+        this.selectedItems = [];
+        ElMessage.success("删除成功！");
+      }).catch(() => {
+        ElMessage.error("删除失败！");
+      });
     }
   },
   computed: {

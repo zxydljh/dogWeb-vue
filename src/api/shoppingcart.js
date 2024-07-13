@@ -30,3 +30,12 @@ export const deleteItem = (userId, itemId) => {
     method: "delete"
   });
 };
+
+// 删除购物车选中的全部商品
+export const deleteSelectedItem = (userId, itemIds) => {
+  return request({
+    url: `/user/shoppingCart/deleteSelectedItem/${userId}`,
+    method: "delete",
+    data: itemIds
+  });
+};
