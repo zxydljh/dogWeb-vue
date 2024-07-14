@@ -96,6 +96,16 @@ const routes = [
         ]
     },
     {
+        path: '/login',
+        name: 'login',
+        component: () => import('@/components/loginView/LoginPage.vue')
+    },
+    {
+        path: '/register',
+        name: 'register',
+        component: () => import('@/components/loginView/RegisterPage.vue')
+    },
+    {
       path: '/pay',
       name: 'pay',
       component: () => import('@/components/payView/index.vue')
@@ -130,6 +140,7 @@ router.beforeEach((to, from, next) => {
         // 检查用户是否已登录，登录状态保存在 store 中的 loaded 变量中
         if (!store.state.loaded) {
             ElMessage.warning("请先登录");
+            router.push('/login');
             next(false); // 防止路由跳转
         } else {
             next();

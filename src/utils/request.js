@@ -97,6 +97,7 @@ service.interceptors.response.use(
             switch (error.response.status) {
                 case 401:
                     error.message = '登录失效'
+                    router.push('/login')
                     break
                 case 405:
                     error.message = '请求错误'

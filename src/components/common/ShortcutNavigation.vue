@@ -10,7 +10,10 @@
           </li>
           <!--    渲染电话号或名称      -->
           <!-- <li v-else class="username">{{ phoneNumber }}</li> -->
-          <li v-else class="username">{{ username }}</li>
+          <li v-else class="username">
+            {{ username }}
+            <a href="javascript:;" @click="logout">&nbsp;&nbsp;退出</a>
+          </li>
         </ul>
       </div>
       <div class="fr">
@@ -57,6 +60,16 @@ export default {
     showPopup(componentKey) {
       this.$emit('show-popup', componentKey);
     },
+    logout() {
+      this.$store.commit('setToken', '');
+      this.$store.commit('setLoaded', false);
+      this.$store.commit('setPhoneNumber', '');
+      this.$store.commit('setUsername', '');
+      this.$store.commit('setId', '');
+      this.$store.commit('setMember', '');
+      this.$store.commit('setAvatar', '');
+      this.$router.push('/login');
+    }
   },
   computed: {
     ...mapState(['loaded']),

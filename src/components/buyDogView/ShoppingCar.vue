@@ -21,9 +21,11 @@ export default {
         this.shoppingCartList = response.data.data;
         // console.log(this.shoppingCartList);
       }).catch(() => {
+        router.push('/');
         ElMessage.error("获取购物车数据失败！")
       });
     } else {
+      router.push('/login');
       ElMessage.error("请先登录！");
     }
   },
