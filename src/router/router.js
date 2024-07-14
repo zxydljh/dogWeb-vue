@@ -3,6 +3,7 @@ import store from '@/store/index';
 import { ElMessage } from 'element-plus'
 
 // 导航栏组件
+import layout from "@/Layout.vue";
 import Index from "../components/index/IndexProprietaryPage.vue"
 import Variety from "@/components/varietyView/VarietyPage.vue";
 import Toy from "@/components/toyView/ToyPage.vue";
@@ -14,87 +15,90 @@ import Drugstore from "@/components/drugstoreView/DrugstorePage.vue";
 const routes = [
     {
         path: '/',
-        components: {
-            mainContent: Index,
-        },
-        meta: {
-            active: 'index'
-        }
+        component: layout,
+        redirect: '/index',
+        children: [
+            {
+                path: '/index',
+                components: {
+                    mainContent: Index,
+                },
+                meta: {
+                    active: 'index'
+                }
+            },
+            {
+                path: '/variety',
+                components: {
+                    mainContent: Variety,
+                },
+                meta: {
+                    active: 'variety'
+                }
+            },
+            {
+                path: '/information',
+                components: {
+                    mainContent: Information,
+                },
+                meta: {
+                    active: 'information'
+                }
+            },
+            {
+                path: '/buyDog',
+                components: {
+                    mainContent: BuyDog,
+                },
+                meta: {
+                    active: 'buyDog'
+                }
+            },
+            {
+                path: '/drugstore',
+                components: {
+                    mainContent: Drugstore,
+                },
+                meta: {
+                    active: 'drugstore'
+                }
+            },
+            {
+                path: '/food',
+                components: {
+                    mainContent: Food,
+                },
+                meta: {
+                    active: 'food'
+                }
+            },
+            {
+                path: '/toy',
+                components: {
+                    mainContent: Toy,
+                },
+                meta: {
+                    active: 'toy'
+                }
+            },
+            {
+                path: '/shoppingCar',
+                name: 'shoppingCar',
+                components: {
+                    // 动态渲染购物车组件，延迟加载，避免影响首页加载速度，并解决原来的购物车组件加载不出来的问题
+                    mainContent: () => import('@/components/buyDogView/ShoppingCar.vue')
+                },
+                meta: {
+                    active: 'shoppingCar',
+                    requiresAuth: true
+                }
+            },
+        ]
     },
     {
-        path: '/index',
-        components: {
-            mainContent: Index,
-        },
-        meta: {
-            active: 'index'
-        }
-    },
-    {
-        path: '/variety',
-        components: {
-            mainContent: Variety,
-        },
-        meta: {
-            active: 'variety'
-        }
-    },
-    {
-        path: '/information',
-        components: {
-            mainContent: Information,
-        },
-        meta: {
-            active: 'information'
-        }
-    },
-    {
-        path: '/buyDog',
-        components: {
-            mainContent: BuyDog,
-        },
-        meta: {
-            active: 'buyDog'
-        }
-    },
-    {
-        path: '/drugstore',
-        components: {
-            mainContent: Drugstore,
-        },
-        meta: {
-            active: 'drugstore'
-        }
-    },
-    {
-        path: '/food',
-        components: {
-            mainContent: Food,
-        },
-        meta: {
-            active: 'food'
-        }
-    },
-    {
-        path: '/toy',
-        components: {
-            mainContent: Toy,
-        },
-        meta: {
-            active: 'toy'
-        }
-    },
-    {
-        path: '/shoppingCar',
-        name: 'shoppingCar',
-        components: {
-            // 动态渲染购物车组件，延迟加载，避免影响首页加载速度，并解决原来的购物车组件加载不出来的问题
-            mainContent: () => import('@/components/buyDogView/ShoppingCar.vue')
-        },
-        meta: {
-            active: 'shoppingCar',
-            requiresAuth: true
-        }
+      path: '/pay',
+      name: 'pay',
+      component: () => import('@/components/payView/index.vue')
     },
     {
         path: '/:pathMatch(.*)*',

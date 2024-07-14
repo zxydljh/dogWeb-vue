@@ -1,10 +1,12 @@
 <script>
+import router from "@/router/router";
 export default {
   name: 'MemberServer',
   methods: {
     buyMember() {
       this.$store.commit('setPrice', '328')
       this.$store.commit('setPayType', 'member')
+      router.push('/pay')
     }
   }
 }

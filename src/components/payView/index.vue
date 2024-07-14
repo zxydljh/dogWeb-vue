@@ -54,6 +54,8 @@ export default {
   justify-content: center;
   background-color: #f1f1f1;
   border-radius: 6px;
+  width: max(300px, 50%);
+  margin: 20px auto;
 }
 
 #payBox h1 {

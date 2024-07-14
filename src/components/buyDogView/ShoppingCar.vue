@@ -1,6 +1,7 @@
 <script>
 import {getListByUserId,incrementItemNumber,decrementItemNumber,deleteItem,deleteSelectedItem} from "@/api/shoppingcart";
 import {ElMessage} from "element-plus";
+import router from "@/router/router";
 
 export default {
   name: 'ShoppingCar',
@@ -88,6 +89,15 @@ export default {
       }).catch(() => {
         ElMessage.error("删除失败！");
       });
+    },
+    payOrder() {
+      if (this.selectedItems.length === 0) {
+        ElMessage.warning("请选择要购买的商品！");
+        return;
+      }
+      this.$store.commit('setPrice', this.totalPrice);
+      this.$store.commit('setPayType', 'shoppingCart');
+      router.push('/pay')
     }
   },
   computed: {
@@ -152,7 +162,7 @@ export default {
         <div class="toolbar-right">
           <div class="amount-sum">已经选 <em>{{ selectedItems.length }}</em> 件商品</div>
           <div class="price-sum">总价： <em>￥{{ totalPrice }}</em></div>
-          <a href="javascript:;" class="btn-area">去结算</a>
+          <a href="javascript:;" class="btn-area" @click="payOrder()">去结算</a>
         </div>
       </div>
     </div>
