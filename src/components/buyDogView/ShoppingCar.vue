@@ -33,24 +33,26 @@ export default {
     increment(item) {
       if (item.number < 99){
         item.number++;
+        incrementItemNumber(this.userId,item.id).then(() => {
+          ElMessage.success("数量增加成功！");
+        }).catch((err) => {
+          ElMessage.error(err.message);
+        });
       } else {
         ElMessage.warning("一次下单商品数量不能超过99！");
       }
-      incrementItemNumber(this.userId,item.id).then(() => {
-        ElMessage.success("数量增加成功！");
-      }).catch(() => {
-        ElMessage.error("数量增加失败！");
-      });
     },
     decrement(item) {
       if (item.number > 1) {
         item.number--;
+        decrementItemNumber(this.userId,item.id).then(() => {
+          ElMessage.success("数量减少成功！");
+        }).catch((err) => {
+          ElMessage.error(err.message);
+        })
+      } else {
+        ElMessage.warning("商品数量不能小于1！");
       }
-      decrementItemNumber(this.userId,item.id).then(() => {
-        ElMessage.success("数量减少成功！");
-      }).catch(() => {
-        ElMessage.error("数量减少失败！");
-      });
     },
     deleteItem(item) {
       deleteItem(this.userId,item.id).then(() => {
