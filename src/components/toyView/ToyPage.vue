@@ -110,19 +110,7 @@ export default {
     </div>
     <!-- 搜索页模块 -->
     <div class="search_page">
-      <ul>
-        <li><a href="javascript:;">1</a></li>
-        <li><a href="javascript:;">2</a></li>
-        <li><a href="javascript:;">3</a></li>
-        <li><a href="javascript:;">4</a></li>
-        <li><a href="javascript:;">5</a></li>
-        <li><a href="javascript:;">6</a></li>
-        <li><a href="javascript:;">7</a></li>
-        <li><a href="javascript:;">8</a></li>
-        <li><a href="javascript:;">9</a></li>
-        <li><a href="javascript:;">...</a></li>
-        <li><a href="javascript:;">20</a></li>
-      </ul>
+      <a-pagination :total="200"/>
     </div>
   </div>
   <!-- toy页面专有模块 end -->
@@ -206,50 +194,7 @@ export default {
   font-size: 14px;
   text-align: center;
   margin: 30px auto 70px;
-}
-
-.search_page ul {
-  margin-left: 300px;
-}
-
-.search_page ul li {
-  float: left;
-  margin-left: 20px;
-  color: #000;
-  background-color: #fff;
-  width: 30px;
-  height: 30px;
-  border: 1px solid #000;
-  border-radius: 15px;
-  line-height: 30px;
-  font-weight: 700;
-}
-
-.search_page ul li:hover {
-  background-color: aqua;
-  border: 1px solid #fff;
-}
-
-.search_page ul li:hover a {
-  color: #fff;
-}
-
-.search_page ul li:nth-child(1) {
-  background-color: aqua;
-  border: 1px solid #fff;
-}
-
-.search_page ul li:nth-child(1) a {
-  color: #fff;
-}
-
-.search_page ul li:nth-child(10) {
-  background-color: #eedeb4;
-  border: none;
-
-}
-
-.search_page ul li:nth-child(10):hover a {
-  color: #666;
+  display: flex;
+  justify-content: center;
 }
 </style>
