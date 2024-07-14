@@ -1,122 +1,108 @@
 <script>
+import {pageQuery} from "@/api/food";
+import {saveToShoppingCart} from "@/api/shoppingcart";
+import {ElMessage} from "element-plus";
+import router from "@/router/router";
+
 export default {
-  name:'FoodPage'
+  name:'FoodPage',
+  data(){
+    return {
+      foodList:[],
+      total:0,
+      pageNum:1,
+      pageSize:12,
+      name: ''
+    }
+  },
+  created(){
+    this.foodPageQuery();
+  },
+  methods:{
+    foodPageQuery(){
+      pageQuery({
+        page: this.pageNum,
+        pageSize: this.pageSize,
+        name: this.name
+      }).then(response => {
+        this.foodList = response.data.data.records;
+        this.total = response.data.data.total;
+      })
+    },
+    onChange(page) {
+      this.pageNum = page;
+      this.foodPageQuery();
+    },
+    onSearch() {
+      this.pageNum = 1;
+      this.foodPageQuery();
+    },
+    purchase(row) {
+      // 判断用户是否登录
+      if (this.$store.state.id === '') {
+        ElMessage('请先登录')
+        router.push('/login');
+        return
+      }
+      // 添加到购物车
+      saveToShoppingCart({
+        userId: this.$store.state.id,
+        foodId: row.id,
+        image: row.image,
+        price: row.price,
+        description: row.description
+      }).then(() => {
+        ElMessage.success('添加成功')
+      }).catch((err) => {
+        ElMessage.error('添加失败' + err)
+      })
+    }
+  }
 }
 </script>
 
 <template>
   <!-- food页面专有模块 start -->
   <div class="w">
-    <div class="drugstore">
+    <div class="search-bar">
+      <input type="text" v-model="name" placeholder="搜索玩具" />
+      <button @click="onSearch">搜索</button>
+    </div>
+    <div class="food">
       <ul class="clearfix">
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/零食-磨牙棒.webp" alt="磨牙棒" title="磨牙棒"></a>
-          <p title="SmartBones磨牙棒狗狗零食咬胶大型犬大号洁齿骨24支礼包囤货装">SmartBones磨牙棒狗狗零食咬胶大型犬大号洁齿骨24支礼包囤货装</p>
+        <li v-for="food in foodList" :key="food.id">
+          <a href="javascript:;"><img :src="food.image" :alt="food.name" :title="food.description"></a>
+          <p :title="food.name">{{ food.name }}</p>
           <div class="cost">
-            <div>309￥<i>339￥</i></div>
-            <div><a href="#">点击购买</a></div>
+            <div>￥{{ food.price }}<i v-show="food.originalPrice">￥{{ food.originalPrice }}</i></div>
+            <div><a href="javascript:;" @click="purchase(food)">点击购买</a></div>
           </div>
         </li>
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/零食-奶酪条.webp" alt="奶酪条" title="奶酪条"></a>
-          <p title="酪咔奶酪条120g*9袋狗狗零食泰迪奖励训犬宠物食品乳酪奶制品">酪咔奶酪条120g*9袋狗狗零食泰迪奖励训犬宠物食品乳酪奶制品</p>
-          <div class="cost">
-            <div>283.90￥<i>303￥</i></div>
-            <div><a href="#">点击购买</a></div>
-          </div>
-        </li>
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/零食-冻干.webp" alt="冻干" title="冻干"></a>
-          <p title="4罐装麦富迪猫零食鲜肉冻干鸡胸鸭胸肉宠物狗狗零食通用鸡胸肉">4罐装麦富迪猫零食鲜肉冻干鸡胸鸭胸肉宠物狗狗零食通用鸡胸肉</p>
-          <div class="cost">
-            <div>278.88￥<i>291.99￥</i></div>
-            <div><a href="#">点击购买</a></div>
-          </div>
-        </li>
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/零食-肉饼.webp" alt="肉饼" title="肉饼"></a>
-          <p title="冻干生骨肉饼！它福冻干生骨肉狗狗零食 真材实料高肉含量低脂肪">冻干生骨肉饼！它福冻干生骨肉狗狗零食 真材实料高肉含量低脂肪</p>
-          <div class="cost">
-            <div>228￥<i>248￥</i></div>
-            <div><a href="#">点击购买</a></div>
-          </div>
-        </li>
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/零食-大肉肠.webp" alt=""></a>
-          <p title="多特思宠物狗狗零食火腿肠150支补钙无盐幼犬泰迪">多特思宠物狗狗零食火腿肠150支补钙无盐幼犬泰迪</p>
-          <div class="cost">
-            <div>9.9￥<i>12.9￥</i></div>
-            <div><a href="#">点击购买</a></div>
-          </div>
-        </li>
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/零食-大骨头.webp" alt=""></a>
-          <p title="狗磨牙棒骨头耐咬洁齿金毛拉布拉多阿拉斯加大型犬磨牙棒咬胶零食">狗磨牙棒骨头耐咬洁齿金毛拉布拉多阿拉斯加大型犬磨牙棒咬胶零食</p>
-          <div class="cost">
-            <div>12.9￥<i>29.9￥</i></div>
-            <div><a href="#">点击购买</a></div>
-          </div>
-        </li>
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/零食-钢骨.webp" alt=""></a>
-          <p>钢骨OSRI狗狗零食鸡肉牛肉味咬胶泰迪金毛宠物洁齿磨牙棒骨头袋装</p>
-          <div class="cost">
-            <div>35￥<i>60￥</i></div>
-            <div><a href="#">点击购买</a></div>
-          </div>
-        </li>
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/零食-鸡胸肉.webp" alt=""></a>
-          <p>路斯狗零食鸡肉干小型犬泰迪比熊宠物</p>
-          <div class="cost">
-            <div>21.9￥<i>24.9￥</i></div>
-            <div><a href="#">点击购买</a></div>
-          </div>
-        </li>
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/零食-黑罐罐头.webp" alt=""></a>
-          <p>路斯宠物狗狗零食狗罐头湿粮主食拌狗粮鸡肉牛肉泰迪小型犬幼犬</p>
-          <div class="cost">
-            <div>23.9￥<i>29.9￥</i></div>
-            <div><a href="#">点击购买</a></div>
-          </div>
-        </li>
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/零食-纯肉狗罐头.webp" alt=""></a>
-          <p>鲜御鸡胸肉牛肉狗罐头泰迪狗狗零食拌饭成犬幼犬通用营养湿粮</p>
-          <div class="cost">
-            <div>1500￥<i>1560￥</i></div>
-            <div><a href="#">点击购买</a></div>
-          </div>
-        </li>
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/零食-鲜肉浓汤罐头.webp" alt=""></a>
-          <p>Schesir雪诗雅彩虹狗狗罐头进口成幼犬通用狗零食增肥搭主粮30罐</p>
-          <div class="cost">
-            <div>448￥<i>478￥</i></div>
-            <div><a href="#">点击购买</a></div>
-          </div>
-        </li>
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/零食-羊扇-肩胛骨.webp" alt=""></a>
-          <p>新西兰进口Ziwi巅峰狗零食狗狗磨牙洁齿骨头犬咬胶肉干</p>
-          <div class="cost">
-            <div>12.9￥<i>19.9￥</i></div>
-            <div><a href="#">点击购买</a></div>
-          </div>
-        </li>
-
       </ul>
     </div>
-    <!-- 搜索页模块 -->
+    <!-- 分页组件 -->
     <div class="search_page">
-      <a-pagination :total="200"/>
+      <a-pagination :total="total" @change="onChange" :page-size="pageSize"/>
     </div>
   </div>
   <!-- food页面专有模块 end -->
 </template>
 
 <style scoped>
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.search-bar input {
+  padding: 5px;
+  width: 200px;
+}
+
+.search-bar button {
+  padding: 5px 10px;
+}
 /* 分类下拉列表 颜色样式变化 */
 .nav ul li:last-child:hover .two a {
   background-color: #ecb11b;
@@ -124,13 +110,13 @@ export default {
 }
 
 /* food页面专有样式 */
-.drugstore ul {
+.food ul {
   text-align: center;
   margin-top: 30px;
   margin-left: 25px;
 }
 
-.drugstore ul li {
+.food ul li {
   float: left;
   width: 260px;
   height: 380px;
@@ -138,18 +124,18 @@ export default {
   margin-bottom: 20px;
 }
 
-.drugstore ul li:nth-child(4n) {
+.food ul li:nth-child(4n) {
   margin-right: 0;
 }
 
-.drugstore ul li img {
+.food ul li img {
   width: 250px;
   height: 260px;
   margin-bottom: 10px;
 }
 
 /* 溢出的文字省略号显示 */
-.drugstore ul li p {
+.food ul li p {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

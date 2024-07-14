@@ -39,3 +39,11 @@ export const deleteSelectedItem = (userId, itemIds) => {
     data: itemIds
   });
 };
+
+export const saveToShoppingCart = (data) => {
+  return request({
+    url: '/user/shoppingCart/saveItemToShoppingCart',
+    method: 'post',
+    data
+  })
+}

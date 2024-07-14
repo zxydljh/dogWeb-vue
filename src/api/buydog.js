@@ -6,11 +6,3 @@ export const getBuyDogList = () => {
         method: 'get'
     })
 }
-
-export const saveToShoppingCart = (data) => {
-    return request({
-        url: '/user/buydog/saveToShoppingCart',
-        method: 'post',
-        data
-    })
-}

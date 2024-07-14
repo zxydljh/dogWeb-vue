@@ -1,122 +1,108 @@
 <script>
+import {pageQuery} from "@/api/drugstore";
+import {saveToShoppingCart} from "@/api/shoppingcart";
+import {ElMessage} from "element-plus";
+import router from "@/router/router";
+
 export default {
-  name:'DrugstorePage'
+  name:'DrugstorePage',
+  data(){
+    return {
+      drugstoreList:[],
+      total:0,
+      pageNum:1,
+      pageSize:12,
+      name: ''
+    }
+  },
+  created(){
+    this.drugstorePageQuery();
+  },
+  methods:{
+    drugstorePageQuery(){
+      pageQuery({
+        page: this.pageNum,
+        pageSize: this.pageSize,
+        name: this.name
+      }).then(response => {
+        this.drugstoreList = response.data.data.records;
+        this.total = response.data.data.total;
+      })
+    },
+    onChange(page) {
+      this.pageNum = page;
+      this.drugstorePageQuery();
+    },
+    onSearch() {
+      this.pageNum = 1;
+      this.drugstorePageQuery();
+    },
+    purchase(row) {
+      // 判断用户是否登录
+      if (this.$store.state.id === '') {
+        ElMessage('请先登录')
+        router.push('/login');
+        return
+      }
+      // 添加到购物车
+      saveToShoppingCart({
+        userId: this.$store.state.id,
+        drugstoreId: row.id,
+        image: row.image,
+        price: row.price,
+        description: row.description
+      }).then(() => {
+        ElMessage.success('添加成功')
+      }).catch((err) => {
+        ElMessage.error('添加失败' + err)
+      })
+    }
+  }
 }
 </script>
 
 <template>
   <!-- drugstore页面专有模块 start -->
   <div class="w">
+    <div class="search-bar">
+      <input type="text" v-model="name" placeholder="搜索玩具" />
+      <button @click="onSearch">搜索</button>
+    </div>
     <div class="drugstore">
       <ul class="clearfix">
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/耳螨滴耳液.webp" alt="耳螨滴耳液" title="耳螨滴耳液"></a>
-          <p title="八枚宠物猫咪耳螨滴耳液狗狗泰迪耳朵清洁洗耳液用消炎耳螨专用药">八枚宠物猫咪耳螨滴耳液狗狗泰迪耳朵清洁洗耳液用消炎耳螨专用药</p>
+        <li v-for="drugstore in drugstoreList" :key="drugstore.id">
+          <a href="javascript:;"><img :src="drugstore.image" :alt="drugstore.name" :title="drugstore.description"></a>
+          <p :title="drugstore.name">{{ drugstore.name }}</p>
           <div class="cost">
-            <div>12.90￥<i>19.90￥</i></div>
-            <div><a href="#">点击购买</a></div>
+            <div>￥{{ drugstore.price }}<i v-show="drugstore.originalPrice">￥{{ drugstore.originalPrice }}</i></div>
+            <div><a href="javascript:;" @click="purchase(drugstore)">点击购买</a></div>
           </div>
         </li>
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/美国麦高臣.webp" alt="美国麦高臣" title="美国麦高臣"></a>
-          <p title="麦高臣宠物神仙水藓外用药狗狗皮肤病喷雾剂猫咪猫藓专用药">麦高臣宠物神仙水藓外用药狗狗皮肤病喷雾剂猫咪猫藓专用药</p>
-          <div class="cost">
-            <div>138.90￥<i>158￥</i></div>
-            <div><a href="#">点击购买</a></div>
-          </div>
-        </li>
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/贝卫多.webp" alt="贝卫多" title="贝卫多"></a>
-          <p title="贝卫多宠物犬狗狗驱虫药祛跳蚤蜱虫体口服固体驱虫药犬专用兽药">贝卫多宠物犬狗狗驱虫药祛跳蚤蜱虫体口服固体驱虫药犬专用兽药</p>
-          <div class="cost">
-            <div>188.88￥<i>299.99￥</i></div>
-            <div><a href="#">点击购买</a></div>
-          </div>
-        </li>
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/大宠爱.webp" alt="大宠爱" title="大宠爱"></a>
-          <p title="大宠爱驱虫滴剂体内外一体大狗边牧中型犬除跳蚤耳螨驱虫药">大宠爱驱虫滴剂体内外一体大狗边牧中型犬除跳蚤耳螨驱虫药</p>
-          <div class="cost">
-            <div>1220￥<i>1500￥</i></div>
-            <div><a href="#">点击购买</a></div>
-          </div>
-        </li>
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/猫狗趾间炎.webp" alt="猫狗趾间炎" title="猫狗趾间炎"></a>
-          <p title="宠物狗狗趾间炎药猫咪脚趾炎猫指间炎狗指尖炎消炎膏专用药膏外用">宠物狗狗趾间炎药猫咪脚趾炎猫指间炎狗指尖炎消炎膏专用药膏外用</p>
-          <div class="cost">
-            <div>30￥<i>35￥</i></div>
-            <div><a href="#">点击购买</a></div>
-          </div>
-        </li>
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/大宠爱_小狗.webp" alt="大宠爱_小狗" title="大宠爱_小狗"></a>
-          <p title="大宠爱5.1-10kg小型犬体内外驱虫药滴剂6支狗狗去跳蚤2盒体外一体">大宠爱5.1-10kg小型犬体内外驱虫药滴剂6支狗狗去跳蚤2盒体外一体</p>
-          <div class="cost">
-            <div>2000￥<i>2280￥</i></div>
-            <div><a href="#">点击购买</a></div>
-          </div>
-        </li>
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/美昔.webp" alt="美昔" title="美昔"></a>
-          <p title="宠物美昔美洛昔康内服混悬液10ml32ml猫咪专用口服止疼止痛药">宠物美昔美洛昔康内服混悬液10ml32ml猫咪专用口服止疼止痛药</p>
-          <div class="cost">
-            <div>777￥<i>850￥</i></div>
-            <div><a href="#">点击购买</a></div>
-          </div>
-        </li>
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/福来达.webp" alt="福来达" title="福来达"></a>
-          <p title="大型犬福来恩滴剂6支装+犬心保6粒狗狗体内体外驱虫药体内外药品">大型犬福来恩滴剂6支装+犬心保6粒狗狗体内体外驱虫药体内外药品</p>
-          <div class="cost">
-            <div>740￥<i>780￥</i></div>
-            <div><a href="#">点击购买</a></div>
-          </div>
-        </li>
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/泰淘气.webp" alt="泰淘气" title="泰淘气"></a>
-          <p title="泰淘气贝那普利片宠物狗狗心脏病降血压咀嚼片充血性心力衰竭药F5">八枚宠物猫咪耳螨滴耳液狗狗泰迪耳朵清洁洗耳液用消炎耳螨专用药</p>
-          <div class="cost">
-            <div>540￥<i>640￥</i></div>
-            <div><a href="#">点击购买</a></div>
-          </div>
-        </li>
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/宠物喂药神器.webp" alt="宠物喂药神器" title="宠物喂药神器"></a>
-          <p title="狗狗猫咪喂药宠物喂药神器喂药器针筒式推药器猫用驱虫吃药双用">狗狗猫咪喂药宠物喂药神器喂药器针筒式推药器猫用驱虫吃药双用</p>
-          <div class="cost">
-            <div>4￥<i>6￥</i></div>
-            <div><a href="#">点击购买</a></div>
-          </div>
-        </li>
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/宠物喂药器.webp" alt="宠物喂药器" title="宠物喂药器"></a>
-          <p title="宠物喂药器猫咪狗狗针筒喂药神器吃药犬猫用体外驱虫体内喂药针管">宠物喂药器猫咪狗狗针筒喂药神器吃药犬猫用体外驱虫体内喂药针管</p>
-          <div class="cost">
-            <div>8.8￥<i>18.8￥</i></div>
-            <div><a href="#">点击购买</a></div>
-          </div>
-        </li>
-        <li>
-          <a href="#"><img src="https://dog-dog-website.oss-cn-guangzhou.aliyuncs.com/upload/魔伽.webp" alt="魔伽" title="魔伽"></a>
-          <p title="魔伽感康灵宠物猫咪感冒药发烧热腹泻呕吐鼻涕双黄连口服液">魔伽感康灵宠物猫咪感冒药发烧热腹泻呕吐鼻涕双黄连口服液</p>
-          <div class="cost">
-            <div>28.8￥<i>30￥</i></div>
-            <div><a href="#">点击购买</a></div>
-          </div>
-        </li>
-
       </ul>
     </div>
-    <!-- 搜索页模块 -->
+    <!-- 分页组件 -->
     <div class="search_page">
-      <a-pagination :total="200"/>
+      <a-pagination :total="total" @change="onChange" :page-size="pageSize"/>
     </div>
   </div>
   <!-- drugstore页面专有模块 end -->
 </template>
 
 <style scoped>
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.search-bar input {
+  padding: 5px;
+  width: 200px;
+}
+
+.search-bar button {
+  padding: 5px 10px;
+}
 /* 分类下拉列表 颜色样式变化 */
 .nav ul li:last-child:hover .one a {
   background-color: #ecb11b;

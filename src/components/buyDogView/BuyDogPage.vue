@@ -1,6 +1,7 @@
 <script>
-import {getBuyDogList,saveToShoppingCart} from "@/api/buydog";
+import {getBuyDogList} from "@/api/buydog";
 import {ElMessage} from 'element-plus'
+import {saveToShoppingCart} from "@/api/shoppingcart";
 
 export default {
   name: 'BuyDogPage',
