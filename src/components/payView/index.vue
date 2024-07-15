@@ -12,7 +12,9 @@
 </template>
 
 <script>
-import axios from "axios";
+import {payOrderItems} from "@/api/pay";
+import {ElMessage} from "element-plus";
+import router from "@/router/router";
 
 export default {
   name: "PayServer",
@@ -27,21 +29,19 @@ export default {
   },
   methods: {
     scanToPay() {
-      axios.post("/api/user/pay", {
-        id: this.$store.state.id,
-        payType: this.$store.state.payType,
-        price: this.price
-      })
-          .then(response => {
-            if (response.data.code === 1)
-              this.paymentResult = "支付成功"
-            else
-              this.paymentResult = response.data.msg
-            this.$store.commit("setPrice",'')
-          })
-          .catch(error => {
-            console.log(error)
-          });
+      payOrderItems(this.$store.state.id,this.$store.state.payType,this.price,this.$store.state.orderItems).then(response => {
+        if (response.data.code === 1) {
+          this.paymentResult = "支付成功"
+          this.$store.commit("setOrderItems",'')
+          this.$store.commit("setPrice",'')
+          this.$store.commit("setPayType",'')
+          router.push('/shoppingCar')
+        } else {
+          this.paymentResult = response.data.msg
+        }
+      }).catch(error => {
+        ElMessage.error(error.message ? error.message : '支付异常！')
+      });
     }
   }
 };

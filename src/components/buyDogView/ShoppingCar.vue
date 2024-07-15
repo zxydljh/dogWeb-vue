@@ -70,6 +70,7 @@ export default {
         // 将商品添加到选中列表中
         this.selectedItems.push(item);
       }
+      console.log(this.selectedItems)
     },
     selectAll() {
       if (this.selectedItems.length === this.shoppingCartList.length) {
@@ -101,6 +102,7 @@ export default {
       }
       this.$store.commit('setPrice', this.totalPrice);
       this.$store.commit('setPayType', 'shoppingCart');
+      this.$store.commit('setOrderItems', this.selectedItems)
       router.push('/pay')
     }
   },

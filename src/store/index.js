@@ -10,6 +10,7 @@ export default createStore({
         price: '',
         payType: '',
         member: '',
+        orderItems: [],
         avatar: ''
     },
     mutations: {
@@ -37,6 +38,9 @@ export default createStore({
         },
         setMember(state, member) {
             state.member = member
+        },
+        setOrderItems(state, orderItems) {
+            state.orderItems = orderItems
         },
         setAvatar(state, avatar) {
             state.avatar = avatar
