@@ -1,6 +1,51 @@
 <script>
+import {submitFeedback} from "@/api/feedback";
+import {ElMessage} from "element-plus";
+
 export default {
-  name: 'SuggestServer'
+  name: 'SuggestServer',
+  data() {
+    return {
+      userId: '',
+      userName: '',
+      userPhone: '',
+      feedbackTopic: '',
+      feedbackInfo: ''
+    }
+  },
+  methods: {
+    submit() {
+      if (!this.feedbackTopic) {
+        ElMessage.warning("请选中反馈主题!");
+        return;
+      }
+      if (!this.feedbackInfo) {
+        ElMessage.warning("请输入您的详细意见!");
+        return;
+      }
+      const data = {
+        userId: this.userId,
+        userName: this.userName,
+        userPhone: this.userPhone,
+        feedbackTopic: this.feedbackTopic,
+        feedbackInfo: this.feedbackInfo
+      }
+      submitFeedback(data)
+          .then((res) => {
+            if (res.data.code === 1) {
+              ElMessage.success("提交成功,感谢您的宝贵意见!");
+            }
+          })
+          .catch(error => {
+            ElMessage.error(error.message || "提交失败,请稍后重试!");
+          });
+    }
+  },
+  created() {
+    this.userId = this.$store.state.id;
+    this.userName = this.$store.state.username;
+    this.userPhone = this.$store.state.phoneNumber;
+  }
 }
 </script>
 
@@ -10,33 +55,32 @@ export default {
     <div class="title">
       <h1>留言/建议</h1>
     </div>
-    <form action="">
+    <form @submit.prevent="submit">
       <div>
         <label for="name">姓 名:</label>
-        <input type="text" id="name">
+        <input type="text" id="name" v-model="userName">
       </div>
       <div>
         <label for="phone">联系电话:</label>
-        <input type="tel" id="phone">
+        <input type="tel" id="phone" v-model="userPhone">
       </div>
       <div>
         <label for="theme">反馈主题:</label>
-        <select type="text" id="theme">
-          <datalist>
-            <option>----------请选择----------</option>
-            <option>人工服务差</option>
-            <option>页面不美观</option>
-            <option>内容质量差</option>
-            <option>其他</option>
-          </datalist>
+        <select id="theme" v-model="feedbackTopic">
+          <option value="" disabled>----------请选择----------</option>
+          <option>人工服务差</option>
+          <option>页面不美观</option>
+          <option>内容质量差</option>
+          <option>其他</option>
         </select>
       </div>
       <div class="description">
         <label for="description">详细描述:</label>
-        <textarea name="extra[feed-content]" id="description" cols="30" rows="8"></textarea>
+        <textarea id="description" cols="30" rows="8" placeholder="请输入您的详细意见..."
+                  v-model="feedbackInfo"></textarea>
       </div>
-      <button type="submit">提交</button>
       <button type="reset">重写</button>
+      <button type="submit">提交</button>
     </form>
   </div>
   <!-- suggest页专有模块 end -->
