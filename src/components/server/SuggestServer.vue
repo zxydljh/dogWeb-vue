@@ -80,7 +80,7 @@ export default {
                   v-model="feedbackInfo"></textarea>
       </div>
       <button type="reset">重写</button>
-      <button type="submit">提交</button>
+      <button type="submit" class="feedback-submit">提交</button>
     </form>
   </div>
   <!-- suggest页专有模块 end -->
@@ -157,5 +157,9 @@ export default {
   margin: 30px 10px 0 0;
   background-color: orange;
   border-radius: 10px;
+}
+
+.feedback-submit {
+  background-color: rgba(11, 227, 177, 0.94) !important;
 }
 </style>
