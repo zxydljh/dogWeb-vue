@@ -282,7 +282,8 @@ export default {
     // 增加用户收货地址
     const addAddress = async () => {
       // fix 修复没有填写收货地址，还添加成功的bug
-      if(!addressForm.value.address){
+      // console.log(addressForm.value.address)
+      if(addressForm.value.address){
         const addressData = {
           userId: store.state.id,
           sex: form.value.sex === '男' ? 1 : 0,
