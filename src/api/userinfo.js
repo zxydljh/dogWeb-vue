@@ -36,7 +36,7 @@ export const getAddressList = (id) => {
 export const updateDefaultAddress = (data) => {
     return request({
         url: '/user/userinfo/updateDefaultAddress',
-        method: 'post',
+        method: 'put',
         data
     })
 }

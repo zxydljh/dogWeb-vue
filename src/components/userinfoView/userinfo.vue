@@ -96,19 +96,20 @@
       <a-form :model="defaultAddressForm" label-width="80px" class="userinfo-form">
         <a-form-item label="选择默认地址">
           <a-select v-model="defaultAddressForm.address" placeholder="请选择地址">
-            <a-select-option
+            <a-option
                 v-for="address in addresses"
                 :key="address.id"
-                :value="address.address"
+                :value="address.completeAddress"
             >
-              {{ address.address }}
-            </a-select-option>
+              {{ address.completeAddress }}
+            </a-option>
           </a-select>
         </a-form-item>
         <a-form-item>
-          <a-button type="primary" status="warning" @click="alterDefaultAddress">修改默认地址</a-button>
+          <a-button type="primary" status="warning" @click="alterDefaultAddress()">修改默认地址</a-button>
         </a-form-item>
       </a-form>
+
       <!--  显示用户购买过的商品  -->
       <div class="userinfo-buy-goods">
         <h1>购买记录</h1>
@@ -135,7 +136,7 @@
 </template>
 
 <script>
-import {getUserInfo, alterUserInfo, addUserAddress, updateDefaultAddress} from "@/api/userinfo";
+import {getUserInfo, alterUserInfo, addUserAddress, updateDefaultAddress, getAddressList} from "@/api/userinfo";
 import {ElMessage} from "element-plus";
 import {ref, onMounted} from "vue";
 import store from "@/store";
@@ -200,6 +201,7 @@ export default {
     });
 
     const defaultAddressForm = ref({
+      addressBookId: '',
       address: ''
     });
 
@@ -219,7 +221,6 @@ export default {
             {label: '性别', value: data.sex === 1 ? '男' : '女'},
             {label: '默认收货地址', value: data.address},
           ];
-          addresses.value = data.addresses || [];
           userAvatar.value = {
             avatar: data.avatar
           };
@@ -280,11 +281,37 @@ export default {
           ElMessage.success("增加收货地址成功！");
           addressForm.value = {}
           fetchUserInfo();
+          fetchAddresses()
         } else {
           ElMessage.error("增加收货地址失败！");
         }
       } catch (err) {
         ElMessage.error(err.message || "增加收货地址失败！");
+      }
+    };
+
+    // 查询该用户所有地址
+    const fetchAddresses = async () => {
+      try {
+        const res = await getAddressList(store.state.id);
+        if (res.data.code === 1) {
+          addresses.value = res.data.data;
+          // console.log(addresses.value)
+          // 默认地址
+          for (let i = 0; i < addresses.value.length; i++){
+            if (addresses.value[i].isDefault == 1){
+              defaultAddressForm.value = {
+                addressBookId: addresses.value[i].id,
+                address: addresses.value[i].completeAddress
+              }
+              // console.log(defaultAddressForm.value)
+            }
+          }
+        } else {
+          ElMessage.error("获取收货地址失败！");
+        }
+      } catch (err) {
+        ElMessage.error(err.message || "获取收货地址失败！");
       }
     };
 
@@ -320,6 +347,7 @@ export default {
 
     onMounted(() => {
       fetchUserInfo();
+      fetchAddresses();
       if (userAvatar.value.avatar) {
         file.value = {
           url: userAvatar.value.avatar
@@ -343,7 +371,8 @@ export default {
       cancelUpdateForm,
       updateUserInfo,
       addAddress,
-      alterDefaultAddress
+      alterDefaultAddress,
+      fetchAddresses
     };
   },
 };
