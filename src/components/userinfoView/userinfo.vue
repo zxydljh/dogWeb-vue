@@ -38,7 +38,7 @@
             </a-form-item>
             <a-form-item label="头像" field="avatar">
               <a-upload
-                  action="/"
+                  action="/api/user/common/upload"
                   :show-file-list="false"
                   @change="onChange"
                   @progress="onProgress"
