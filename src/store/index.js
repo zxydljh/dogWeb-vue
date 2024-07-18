@@ -7,6 +7,7 @@ export default createStore({
         phoneNumber: '',
         loaded: false,
         username: '',
+        userAvatar: '',
         price: '',
         payType: '',
         member: '',

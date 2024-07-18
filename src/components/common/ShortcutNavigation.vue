@@ -19,6 +19,10 @@
       <div class="fr">
         <ul>
           <li>
+            <router-link to="userinfo">个人中心</router-link>
+          </li>
+          <li></li>
+          <li>
             <a href="javascript:;" class="service">客户服务</a>
             <div class="small_list">
               <div>

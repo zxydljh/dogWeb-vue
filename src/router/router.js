@@ -106,6 +106,11 @@ const routes = [
         component: () => import('@/components/loginView/RegisterPage.vue')
     },
     {
+        path: '/userinfo',
+        name: 'userinfo',
+        component: () => import('@/components/userinfoView/userinfo.vue')
+    },
+    {
       path: '/pay',
       name: 'pay',
       component: () => import('@/components/payView/index.vue')
