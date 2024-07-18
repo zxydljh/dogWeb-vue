@@ -52,7 +52,7 @@
                         class="arco-upload-list-picture custom-upload-avatar"
                         v-if="file && file.url"
                     >
-                      <img :src="file.url"/>
+                      <img :src="file.url" alt="头像"/>
                       <div class="arco-upload-list-picture-mask">
                         <IconEdit/>
                       </div>
@@ -111,17 +111,14 @@
       <div class="userinfo-buy-goods">
         <h1>购买记录</h1>
         <a-list>
-          <a-list-item v-for="idx in 4" :key="idx">
+          <a-list-item v-for="(item, idx) in purchasedGoods" :key="idx">
             <a-list-item-meta
-                title="Beijing Bytedance Technology Co., Ltd."
-                description="Beijing ByteDance Technology Co., Ltd. is an enterprise located in China."
+                :title="item.description"
+                :description="`购买数量: ${item.number}, 单价: ${item.price},购买时间: ${item.createTime}`"
             >
               <template #avatar>
                 <a-avatar shape="square">
-                  <img
-                      alt="avatar"
-                      src="https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp"
-                  />
+                  <img :alt="item.description" :src="item.image" />
                 </a-avatar>
               </template>
             </a-list-item-meta>
@@ -133,7 +130,7 @@
 </template>
 
 <script>
-import {getUserInfo, alterUserInfo, addUserAddress, updateDefaultAddress, getAddressList} from "@/api/userinfo";
+import {getUserInfo, alterUserInfo, addUserAddress, updateDefaultAddress, getAddressList, getPurchasedGoods} from "@/api/userinfo";
 import {ElMessage} from "element-plus";
 import {ref, onMounted} from "vue";
 import store from "@/store";
@@ -317,7 +314,7 @@ export default {
           // console.log(addresses.value)
           // 默认地址
           for (let i = 0; i < addresses.value.length; i++) {
-            if (addresses.value[i].isDefault == 1) {
+            if (addresses.value[i].isDefault === 1) {
               defaultAddressForm.value = {
                 addressBookId: addresses.value[i].id,
                 address: addresses.value[i].completeAddress
@@ -367,10 +364,26 @@ export default {
       }
     }
 
+    // 获取用户已购买的商品
+    const purchasedGoods = ref([]);
+
+    const fetchPurchasedGoods = async () => {
+      try {
+        const res = await getPurchasedGoods(store.state.id);
+        if (res.data.code === 1) {
+          purchasedGoods.value = res.data.data;
+        } else {
+          ElMessage.error("获取已购买的商品失败！");
+        }
+      } catch (err) {
+        ElMessage.error(err.message || "获取已购买的商品失败！");
+      }
+    };
 
     onMounted(() => {
       fetchUserInfo();
       fetchAddresses();
+      fetchPurchasedGoods();
       if (userAvatar.value.avatar) {
         file.value = {
           url: userAvatar.value.avatar
@@ -395,7 +408,9 @@ export default {
       updateUserInfo,
       addAddress,
       alterDefaultAddress,
-      fetchAddresses
+      fetchAddresses,
+      fetchPurchasedGoods,
+      purchasedGoods,
     };
   },
 };
