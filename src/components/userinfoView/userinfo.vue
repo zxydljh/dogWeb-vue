@@ -281,24 +281,29 @@ export default {
 
     // 增加用户收货地址
     const addAddress = async () => {
-      const addressData = {
-        userId: store.state.id,
-        sex: form.value.sex === '男' ? 1 : 0,
-        phone: form.value.phone,
-        completeAddress: addressForm.value.address
-      }
-      try {
-        const res = await addUserAddress(addressData);
-        if (res.data.code === 1) {
-          ElMessage.success("增加收货地址成功！");
-          addressForm.value = {}
-          fetchUserInfo();
-          fetchAddresses()
-        } else {
-          ElMessage.error("增加收货地址失败！");
+      // fix 修复没有填写收货地址，还添加成功的bug
+      if(!addressForm.value.address){
+        const addressData = {
+          userId: store.state.id,
+          sex: form.value.sex === '男' ? 1 : 0,
+          phone: form.value.phone,
+          completeAddress: addressForm.value.address
         }
-      } catch (err) {
-        ElMessage.error(err.message || "增加收货地址失败！");
+        try {
+          const res = await addUserAddress(addressData);
+          if (res.data.code === 1) {
+            ElMessage.success("增加收货地址成功！");
+            addressForm.value = {}
+            fetchUserInfo();
+            fetchAddresses()
+          } else {
+            ElMessage.error("增加收货地址失败！");
+          }
+        } catch (err) {
+          ElMessage.error(err.message || "增加收货地址失败！");
+        }
+      } else {
+        ElMessage.error("请填写收货地址！");
       }
     };
 
@@ -348,6 +353,8 @@ export default {
           if (res.data.code === 1) {
             ElMessage.success("修改默认地址成功！");
             fetchUserInfo();
+            // 重新获取地址 fix 原地址一直不变的bug
+            fetchAddresses();
           } else {
             ElMessage.error("修改默认地址失败！");
           }
