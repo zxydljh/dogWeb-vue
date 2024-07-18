@@ -114,7 +114,7 @@
           <a-list-item v-for="(item, idx) in purchasedGoods" :key="idx">
             <a-list-item-meta
                 :title="item.description"
-                :description="`购买数量: ${item.number}, 单价: ${item.price},购买时间: ${item.createTime}`"
+                :description="`购买数量: ${item.number}, 单价: ${item.price},购买时间: ${formatDate(item.createTime)}`"
             >
               <template #avatar>
                 <a-avatar shape="square">
@@ -380,6 +380,17 @@ export default {
       }
     };
 
+    // 格式化时间 "createTime": [2024,7,15,23,16,9] 转为 "2024年7月15日 23:16:9"
+    const formatDate = (createTime) => {
+      if (!Array.isArray(createTime) || createTime.length !== 6) {
+        return '无效日期';
+      }
+
+      const [year, month, day, hour, minute, second] = createTime;
+
+      return `${year}年${month}月${day}日 ${hour}:${minute}:${second}`;
+    };
+
     onMounted(() => {
       fetchUserInfo();
       fetchAddresses();
@@ -411,6 +422,7 @@ export default {
       fetchAddresses,
       fetchPurchasedGoods,
       purchasedGoods,
+      formatDate,
     };
   },
 };
