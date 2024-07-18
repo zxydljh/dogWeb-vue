@@ -42,6 +42,7 @@
                   :show-file-list="false"
                   @change="onChange"
                   @progress="onProgress"
+                  @success="onSuccess"
               >
                 <template #upload-button>
                   <div
@@ -161,13 +162,33 @@ export default {
     // 上传头像
     const file = ref();
     const onChange = (_, currentFile) => {
+      // console.log(currentFile)
+      if (currentFile.file.type !== 'image/jpeg' && currentFile.file.type !== 'image/png') {
+        ElMessage.error('请选择 jpg 或 png 格式的图片');
+        return;
+      }
+      if (currentFile.file.size > 1024 * 1024) {
+        ElMessage.error('图片大小不能超过 1MB');
+        return;
+      }
+      // console.log(file.value)
       file.value = {
+        // 覆盖默认的 file 对象
         ...currentFile,
-        // url: URL.createObjectURL(currentFile.file),
       };
     };
+
+    // 处理文件上传进度事件
     const onProgress = (currentFile) => {
       file.value = currentFile;
+    };
+
+    // 处理文件上传成功事件
+    const onSuccess = (fileItem) => {
+      // 上传到alioss后的图片路径
+      // console.log(fileItem.response.data)
+      ElMessage.success('上传成功');
+      form.value.avatar = fileItem.response.data
     };
 
     const userAvatar = ref({
@@ -186,6 +207,7 @@ export default {
 
     const updateFormVisible = ref(false);
 
+    // 获取用户信息
     const fetchUserInfo = async () => {
       try {
         const res = await getUserInfo(store.state.id);
@@ -207,6 +229,11 @@ export default {
             sex: data.sex,
             avatar: data.avatar
           };
+
+          // 修改store里面存储的用户信息
+          store.commit("setUserAvatar", data.avatar)
+          store.commit("setUsername", data.name)
+          store.commit("setPhoneNumber", data.phone)
         } else {
           ElMessage.error("获取个人信息失败！");
         }
@@ -215,9 +242,18 @@ export default {
       }
     };
 
+    // 更新用户信息
     const updateUserInfo = async () => {
       try {
-        const res = await alterUserInfo(store.state.id, form.value);
+        const data = {
+          id: store.state.id,
+          name: form.value.name,
+          phone: form.value.phone,
+          sex: form.value.sex === '男' ? 1 : 0,
+          avatar: form.value.avatar
+        }
+        console.log("data:"+data)
+        const res = await alterUserInfo(data);
         if (res.data.code === 1) {
           ElMessage.success("更新信息成功！");
           fetchUserInfo();
@@ -230,6 +266,7 @@ export default {
       }
     };
 
+    // 增加用户收货地址
     const addAddress = async () => {
       try {
         const res = await addUserAddress(store.state.id, addressForm.value);
@@ -244,6 +281,7 @@ export default {
       }
     };
 
+    // 修改默认地址
     const alterDefaultAddress = async () => {
       try {
         const res = await updateDefaultAddress(store.state.id, defaultAddressForm.value);
@@ -258,6 +296,7 @@ export default {
       }
     };
 
+    // 显示更新用户信息表单
     const showUpdateForm = () => {
       updateFormVisible.value = true;
       // 初始化更新信息表单的数据
@@ -292,6 +331,7 @@ export default {
       file,
       onChange,
       onProgress,
+      onSuccess,
       showUpdateForm,
       cancelUpdateForm,
       updateUserInfo,

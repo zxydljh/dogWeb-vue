@@ -28,6 +28,9 @@ export default createStore({
         setUsername(state, username) {
             state.username = username
         },
+        setUserAvatar(state, avatar) {
+            state.userAvatar = avatar
+        },
         setPrice(state, price) {
             state.price = price
         },
