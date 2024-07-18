@@ -95,7 +95,7 @@
       <!-- 修改默认地址 -->
       <a-form :model="defaultAddressForm" label-width="80px" class="userinfo-form">
         <a-form-item label="选择默认地址">
-          <a-select v-model="defaultAddressForm.address" placeholder="请选择地址">
+          <a-select v-model="defaultAddressForm.address" placeholder="请选择地址" @change="alterDefaultAddress">
             <a-option
                 v-for="address in addresses"
                 :key="address.id"
@@ -104,9 +104,6 @@
               {{ address.completeAddress }}
             </a-option>
           </a-select>
-        </a-form-item>
-        <a-form-item>
-          <a-button type="primary" status="warning" @click="alterDefaultAddress()">修改默认地址</a-button>
         </a-form-item>
       </a-form>
 
@@ -243,6 +240,21 @@ export default {
       }
     };
 
+    // 显示更新用户信息表单
+    const showUpdateForm = () => {
+      updateFormVisible.value = true;
+      // 初始化更新信息表单的数据
+      form.value = {
+        name: userInfo.value[0].value,
+        phone: userInfo.value[1].value,
+        sex: userInfo.value[2].value
+      };
+    };
+
+    const cancelUpdateForm = () => {
+      updateFormVisible.value = false;
+    };
+
     // 更新用户信息
     const updateUserInfo = async () => {
       try {
@@ -253,7 +265,7 @@ export default {
           sex: form.value.sex === '男' ? 1 : 0,
           avatar: form.value.avatar
         }
-        console.log("data:"+data)
+        // console.log("data:" + data)
         const res = await alterUserInfo(data);
         if (res.data.code === 1) {
           ElMessage.success("更新信息成功！");
@@ -298,8 +310,8 @@ export default {
           addresses.value = res.data.data;
           // console.log(addresses.value)
           // 默认地址
-          for (let i = 0; i < addresses.value.length; i++){
-            if (addresses.value[i].isDefault == 1){
+          for (let i = 0; i < addresses.value.length; i++) {
+            if (addresses.value[i].isDefault == 1) {
               defaultAddressForm.value = {
                 addressBookId: addresses.value[i].id,
                 address: addresses.value[i].completeAddress
@@ -317,33 +329,36 @@ export default {
 
     // 修改默认地址
     const alterDefaultAddress = async () => {
-      try {
-        const res = await updateDefaultAddress(store.state.id, defaultAddressForm.value);
-        if (res.data.code === 1) {
-          ElMessage.success("修改默认地址成功！");
-          fetchUserInfo();
-        } else {
-          ElMessage.error("修改默认地址失败！");
+      // console.log(defaultAddressForm.value)
+      const selectedAddress = addresses.value.find(
+          address => address.completeAddress === defaultAddressForm.value.address
+      );
+      if (selectedAddress) {
+        const newDefaultAddressId = selectedAddress.id;
+        const data = {
+          userId: store.state.id,
+          // 旧地址薄id
+          oldAddressBookId: defaultAddressForm.value.addressBookId,
+          // 新地址薄id
+          newAddressBookId: newDefaultAddressId,
+          newAddress: defaultAddressForm.value.address
         }
-      } catch (err) {
-        ElMessage.error(err.message || "修改默认地址失败！");
+        try {
+          const res = await updateDefaultAddress(data);
+          if (res.data.code === 1) {
+            ElMessage.success("修改默认地址成功！");
+            fetchUserInfo();
+          } else {
+            ElMessage.error("修改默认地址失败！");
+          }
+        } catch (err) {
+          ElMessage.error(err.message || "修改默认地址失败！");
+        }
+      } else {
+        ElMessage.error("请选择一个地址作为默认地址！");
       }
-    };
+    }
 
-    // 显示更新用户信息表单
-    const showUpdateForm = () => {
-      updateFormVisible.value = true;
-      // 初始化更新信息表单的数据
-      form.value = {
-        name: userInfo.value[0].value,
-        phone: userInfo.value[1].value,
-        sex: userInfo.value[2].value
-      };
-    };
-
-    const cancelUpdateForm = () => {
-      updateFormVisible.value = false;
-    };
 
     onMounted(() => {
       fetchUserInfo();
